@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cyber Cafe Services</title>
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack">
+    <span id="tickerText1">Loading updates…</span>
+    <span id="tickerText2">Loading updates…</span>
+  </div>
+</div>
+
+<header class="site-header">
+  <div class="container nav-row">
+    <a href="#top" class="brand">
+      <div class="brand-mark">CC</div>
+      <div class="brand-text">
+        <div class="name" id="siteNameLbl">Cyber Cafe Services</div>
+        <div class="tag" id="siteTaglineLbl">Aapke documents, ek hi jagah</div>
+      </div>
+    </a>
+    <nav class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <a href="#services" class="btn btn-primary">View Services</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <h1>Every certificate and license, sorted from one counter.</h1>
+        <p class="lead" id="heroLead">FSSAI, Udyam, Food License, Character Certificate, Gazette and more — tell us what you need, bring the right documents, and we'll handle the paperwork.</p>
+        <div class="hero-actions">
+          <a href="#services" class="btn btn-primary">Browse services</a>
+          <a href="#how" class="btn btn-ghost">How it works</a>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat"><div class="num" id="statCount">8+</div><div class="lbl">Services offered</div></div>
+          <div class="hero-stat"><div class="num">1 Day</div><div class="lbl">Avg. turnaround*</div></div>
+          <div class="hero-stat"><div class="num">WhatsApp</div><div class="lbl">Apply in 1 tap</div></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <h3>Applying takes 3 steps</h3>
+        <ol>
+          <li>Pick the service you need below</li>
+          <li>Check the required document list</li>
+          <li>Tap Apply — it opens WhatsApp with your request ready to send</li>
+        </ol>
+        <a href="#services" class="btn btn-outline btn-block">Start now</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Our services</h2>
+          <p>Tap a card to see the exact documents you'll need, watch a short guide, or apply directly on WhatsApp.</p>
+        </div>
+      </div>
+      <div class="grid-services" id="servicesGrid">
+        <!-- service cards injected by app.js -->
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>How it works</h2>
+          <p>No queues, no confusion — just come prepared.</p>
+        </div>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-index">1</div><h4>Choose a service</h4><p>Browse the list above and find the certificate or license you need.</p></div>
+        <div class="step"><div class="step-index">2</div><h4>Check documents</h4><p>Open the document list on the card so you arrive with everything ready.</p></div>
+        <div class="step"><div class="step-index">3</div><h4>Apply on WhatsApp</h4><p>Tap Apply Now — a message is pre-filled, you just hit send from your own number.</p></div>
+        <div class="step"><div class="step-index">4</div><h4>We take it from there</h4><p>We confirm your slot and guide you on the rest over chat.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact-band">
+        <div>
+          <h2>Still not sure what you need?</h2>
+          <p>Message us on WhatsApp and we'll tell you exactly which service and documents apply to you.</p>
+          <a href="#" id="contactWhatsapp" class="btn btn-primary" style="margin-top:14px;">Chat on WhatsApp</a>
+        </div>
+        <div class="contact-info">
+          <div id="contactAddress">📍 Behind New Bus Stand, Front of Dr. Sapkal Hospital, Akola</div>
+          <div id="contactHours">🕒 H…</div>
+          <div id="contactPhone">📱 WhatsApp loading…</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    © <span id="yearLbl"></span> <span id="footerName">Cyber Cafe Services</span> · <a href="admin.html">Admin Login</a>
+  </div>
+</footer>
+
+<!-- Document list modal -->
+<div class="cc-modal-overlay" id="docModalOverlay">
+  <div class="cc-modal">
+    <button class="cc-modal-close" id="docModalClose">✕</button>
+    <h3 id="docModalTitle">Documents required</h3>
+    <p class="modal-sub" id="docModalSub">Bring these along to complete your application.</p>
+    <ul class="doc-list" id="docModalList"></ul>
+    <button class="btn btn-primary btn-block modal-apply" id="docModalApply">Apply for this on WhatsApp</button>
+  </div>
+</div>
+
+<!-- Video modal -->
+<div class="cc-modal-overlay" id="videoModalOverlay">
+  <div class="cc-modal">
+    <button class="cc-modal-close" id="videoModalClose">✕</button>
+    <h3 id="videoModalTitle">Watch guide</h3>
+    <div class="video-wrap"><iframe id="videoFrame" src="" title="Service guide video" allowfullscreen></iframe></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/config.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

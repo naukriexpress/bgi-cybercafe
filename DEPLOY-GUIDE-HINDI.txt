@@ -1,0 +1,34 @@
+BGI CYBERCAFE — SUPABASE + GITHUB + VERCEL SETUP
+================================================
+
+1) SUPABASE PROJECT
+- https://supabase.com पर New project बनाएं.
+- SQL Editor खोलें और supabase/setup.sql की पूरी SQL Run करें.
+- Authentication > Users > Add user में अपना admin email/password बनाएं.
+- setup.sql के आखिर में दी app_admins वाली query में वही email डालकर query Run करें.
+- Project Settings > API से Project URL और anon/publishable key copy करें.
+- js/config.js में दोनों placeholder values replace करें.
+- service_role key कभी भी website, config.js या GitHub में न डालें.
+
+2) LOCAL TEST
+- VS Code terminal: py -m http.server 5500
+- Public: http://localhost:5500/index.html
+- Admin:  http://localhost:5500/admin.html
+- Supabase वाला email/password डालकर login करें.
+- एक छोटा change save करें और incognito window में public page check करें.
+
+3) GITHUB
+- GitHub पर cybercafe-site नाम की empty repository बनाएं.
+- इस folder के अंदर की सभी files/folders upload करें. Folder structure न बदलें.
+- खासकर css, js, supabase, index.html और admin.html सभी upload होने चाहिए.
+
+4) VERCEL
+- Vercel में Continue with GitHub करें > Add New Project.
+- cybercafe-site repo Import करें.
+- Framework Preset: Other; Root Directory: ./; Build/Output fields खाली रखें.
+- Deploy दबाएं. Public URL के अंत में /admin.html admin panel होगा.
+
+SECURITY
+- Admin password code में नहीं है; Supabase Auth संभालता है.
+- Public users केवल data पढ़ सकते हैं. केवल app_admins table में जोड़ा user edit कर सकता है.
+- js/config.js में anon key public होना सामान्य है; RLS security लागू करता है.
