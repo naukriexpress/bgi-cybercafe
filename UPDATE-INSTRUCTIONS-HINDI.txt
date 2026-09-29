@@ -1,0 +1,33 @@
+BGI Cybercafe update: News, tags, dark mode and SEO
+==================================================
+
+IMPORTANT: Deployment se pehle apne existing Supabase project ke SQL Editor mein
+supabase/seo-news-migration.sql ko poora ek baar Run karein.
+Yeh existing services ko delete nahi karta; services mein tags column
+aur news ke liye nayi table/policies jodta hai. Ab jobs_url setting bhi jodta
+hai. Agar aapne is file ka purana version pehle chalaya tha to naya version
+dobara chalana safe hai (IF NOT EXISTS / policy recreation).
+Purana supabase/setup.sql existing project par dobara Run na karein.
+
+Uske baad is folder ke andar ki sabhi files GitHub repository ke ROOT mein
+upload/replace karein. Folder ko repository ke andar extra nested folder
+ke roop mein upload na karein. Vercel deployment Ready hone dein.
+
+Check:
+1. /sitemap.xml par XML aur /robots.txt par Sitemap URL aaye.
+2. Admin > News mein title, summary, full details aur optional https source link
+   save karein. Home par news headline kholein; detail page par source button kholein.
+3. Admin > Services mein comma-separated relevant tags jodein. Service card
+   title/description/View details par click karke detail page check karein.
+4. Night mode toggle aur About Us page desktop/mobile par check karein.
+5. Admin > General settings > Latest Job Updates button link mein HTTPS URL
+   save karein. Home page ke hero par animated button khol kar check karein.
+6. Mobile par Menu, service Apply Now > detail > WhatsApp, share buttons,
+   card ka Copy page link aur dark mode ticker ka gold text check karein.
+
+SEO LIMITATION: Static sitemap fixed pages ko list karta hai. Supabase mein
+admin se baad mein add hui services/news ke URLs is static XML mein automatic
+nahin judte. Har service/news ka alag URL browser mein khulta hai, lekin
+Google indexing/ranking ki guarantee tags ya sitemap se nahi milti.
+Future mein dynamically rendered service/news pages aur dynamic sitemap
+banana SEO ke liye agla engineering step hai.

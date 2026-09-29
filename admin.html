@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Admin Panel — Cyber Cafe Services</title>
+<meta name="robots" content="noindex, nofollow" />
 <link rel="stylesheet" href="css/style.css" />
 <link rel="stylesheet" href="css/admin.css" />
 </head>
@@ -45,6 +46,7 @@
       <button type="button" class="nav-item active" data-panel="panel-settings">⚙️ General settings</button>
       <button type="button" class="nav-item" data-panel="panel-ticker">📢 Top ticker</button>
       <button type="button" class="nav-item" data-panel="panel-services">🗂️ Services</button>
+      <button type="button" class="nav-item" data-panel="panel-news">📰 News</button>
       <button type="button" class="nav-item" data-panel="panel-documents">📄 Master documents</button>
       <button type="button" class="nav-item" data-panel="panel-security">🔒 Change password</button>
     </nav>
@@ -66,6 +68,7 @@
         <label class="field"><span>WhatsApp number (with country code, digits only)</span><input id="setWhatsapp" type="text" placeholder="91XXXXXXXXXX" /></label>
         <label class="field"><span>Address</span><input id="setAddress" type="text" /></label>
         <label class="field"><span>Working hours</span><input id="setHours" type="text" /></label>
+        <label class="field"><span>Latest Job Updates button link</span><input id="setJobsUrl" type="url" placeholder="https://www.naukriexpress.space/" /><small>Only full HTTPS links are accepted.</small></label>
         <button type="button" class="btn btn-primary" id="saveSettingsBtn">Save settings</button>
         <span class="save-msg" id="settingsSaveMsg"></span>
       </div>
@@ -95,6 +98,7 @@
         </div>
         <label class="field"><span>Short tagline</span><input id="svcTagline" type="text" placeholder="e.g. Food business license" /></label>
         <label class="field"><span>Description</span><textarea id="svcDesc" rows="2"></textarea></label>
+        <label class="field"><span>Search tags (comma separated)</span><input id="svcTags" type="text" placeholder="e.g. caste validity, Maharashtra form, Akola" /><small>Use relevant terms only. Tags cannot guarantee Google ranking.</small></label>
         <label class="field"><span>YouTube video link (optional)</span><input id="svcYoutube" type="text" placeholder="https://www.youtube.com/watch?v=..." /></label>
 
         <div class="field">
@@ -115,6 +119,20 @@
 
       <h3 style="margin-top:30px;">All services</h3>
       <div class="admin-service-list" id="adminServiceList"></div>
+    </section>
+
+    <section class="panel" id="panel-news" style="display:none;">
+      <h2>News &amp; updates</h2>
+      <p class="panel-sub">Write full details and add an optional source link. Published news appears on the home page.</p>
+      <div class="card-form" id="newsEditor">
+        <input type="hidden" id="editNewsId" />
+        <label class="field"><span>Headline</span><input id="newsTitle" type="text" /></label>
+        <label class="field"><span>Short summary</span><textarea id="newsSummary" rows="2"></textarea></label>
+        <label class="field"><span>Full details</span><textarea id="newsBody" rows="8"></textarea></label>
+        <label class="field"><span>Source / official link (optional, https://)</span><input id="newsLink" type="url" placeholder="https://example.gov.in/notice" /></label>
+        <div class="editor-actions"><button type="button" class="btn btn-primary" id="saveNewsBtn">Save news</button><button type="button" class="btn btn-ghost" id="clearNewsBtn">Clear / add new</button><span class="save-msg" id="newsSaveMsg"></span></div>
+      </div>
+      <h3 style="margin-top:30px;">All news</h3><div class="admin-service-list" id="adminNewsList"></div>
     </section>
 
     <!-- ---------- Master documents ---------- -->
