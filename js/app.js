@@ -11,10 +11,24 @@
     document.getElementById("servicesGrid").innerHTML = `<p>Website data could not load. Please check Supabase configuration.</p>`;
     return;
   }
-  const { settings, services } = db;
+  const { settings, services, news } = db;
+  try {
+    const jobsUrl = new URL(settings.jobsUrl || "https://www.naukriexpress.space/");
+    if (jobsUrl.protocol === "https:") document.getElementById("jobsPromo").href = jobsUrl.href;
+  } catch (_) {}
+  const newsCard = item => `<article class="service-card news-card">
+    <h3><a href="news-detail.html?id=${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a></h3>
+    <p class="service-desc">${escapeHtml(item.summary || item.body.slice(0, 160))}</p>
+    <a href="news-detail.html?id=${encodeURIComponent(item.id)}">Read full details →</a>
+  </article>`;
+  document.getElementById("heroNews").innerHTML = news.length
+    ? news.slice(0, 3).map(item => `<p class="hero-news-item"><a href="news-detail.html?id=${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a></p>`).join("")
+    : "<p>News will appear here when published.</p>";
+  document.getElementById("newsGrid").innerHTML = news.length
+    ? news.slice(0, 6).map(newsCard).join("")
+    : "<p>No news published yet.</p>";
 
   /* ---------- Header / hero / footer text ---------- */
-  document.title = settings.siteName;
   setText("siteNameLbl", settings.siteName);
   setText("siteTaglineLbl", settings.tagline);
   setText("footerName", settings.siteName);
@@ -47,19 +61,21 @@
         <div class="service-top">
           <div class="service-icon">${escapeHtml(svc.icon || "📄")}</div>
           <div>
-            <h3 class="service-title">${escapeHtml(svc.title)}</h3>
+            <h3 class="service-title"><a href="service.html?id=${encodeURIComponent(svc.id)}">${escapeHtml(svc.title)}</a></h3>
             <div class="service-tagline">${escapeHtml(svc.tagline || "")}</div>
           </div>
         </div>
-        <p class="service-desc">${escapeHtml(svc.description || "")}</p>
+        <p class="service-desc"><a href="service.html?id=${encodeURIComponent(svc.id)}">${escapeHtml(svc.description || "")}</a></p>
+        ${svc.tags?.length ? `<p class="service-tags">${svc.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join("")}</p>` : ""}
         <div class="service-links">
-          <button type="button" data-doc="${svc.id}">📋 Documents required</button>
-          ${hasVideo ? `<button type="button" data-video="${svc.id}">▶ Watch guide</button>` : ``}
+          <a href="service.html?id=${encodeURIComponent(svc.id)}#documents">📋 Documents required</a>
+          ${hasVideo ? `<a href="service.html?id=${encodeURIComponent(svc.id)}#guide">▶ Watch guide</a>` : ``}
         </div>
         <div class="service-actions">
-          <button type="button" class="btn btn-outline" data-doc="${svc.id}">Document list</button>
-          <button type="button" class="btn btn-primary" data-apply="${svc.id}">Apply Now</button>
+          <a class="btn btn-outline" href="service.html?id=${encodeURIComponent(svc.id)}#documents">View details</a>
+          <a class="btn btn-primary" href="service.html?id=${encodeURIComponent(svc.id)}#apply">Apply Now</a>
         </div>
+        <button type="button" class="copy-link" data-copy-id="${escapeHtml(svc.id)}">🔗 Copy page link</button>
       </article>
     `;
   }
@@ -117,8 +133,14 @@
     const docBtn = e.target.closest("[data-doc]");
     const videoBtn = e.target.closest("[data-video]");
     const applyBtn = e.target.closest("[data-apply]");
-    if (docBtn) openDocModal(docBtn.getAttribute("data-doc"));
-    if (videoBtn) openVideoModal(videoBtn.getAttribute("data-video"));
+    const copyBtn = e.target.closest("[data-copy-id]");
+    if (copyBtn) {
+      const link = new URL("service.html?id=" + encodeURIComponent(copyBtn.dataset.copyId), location.href).href;
+      (navigator.clipboard?.writeText(link) || Promise.reject()).then(() => {
+        copyBtn.textContent = "✓ Link copied";
+        setTimeout(() => { copyBtn.textContent = "🔗 Copy page link"; }, 2200);
+      }).catch(() => { window.prompt("Copy this link:", link); });
+    }
     if (applyBtn) applyForService(applyBtn.getAttribute("data-apply"));
   });
 
