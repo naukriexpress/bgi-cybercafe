@@ -739,7 +739,7 @@ html[data-theme="dark"] #services .btn-youtube:hover { background: #a91f1f; }
 @media (min-width: 881px) {
   #services .grid-services {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     flex-wrap: initial;
     overflow: visible;
     scroll-snap-type: none;
