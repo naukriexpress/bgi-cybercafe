@@ -566,3 +566,27 @@ html[data-theme="dark"] .mobile-menu-toggle { background: #352548; color: #fff; 
   .hero-stats { grid-template-columns: 1fr; }
   .service-actions { flex-direction: column; }
 }
+
+/* Homepage service strip: keep every service in one horizontal row. */
+#services.section {
+  padding: 24px 0 18px;
+}
+
+#services .section-head {
+  margin-bottom: 14px;
+}
+
+#services .grid-services {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 14px;
+  overflow-x: auto;
+  padding: 2px 2px 12px;
+  scroll-snap-type: x proximity;
+  -webkit-overflow-scrolling: touch;
+}
+
+#services .service-card {
+  flex: 0 0 min(310px, 82vw);
+  scroll-snap-align: start;
+}
