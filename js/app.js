@@ -64,7 +64,7 @@
   });
 
   function startServicesAutoscroll(scroller) {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches || matchMedia("(max-width: 640px)").matches) return () => {};
     let direction = -1, paused = false, frame;
     const tick = () => {
       if (!paused && scroller.scrollWidth > scroller.clientWidth + 2) {
@@ -88,21 +88,13 @@
       <article class="service-card">
         <div class="service-top">
           <div class="service-icon">${escapeHtml(svc.icon || "📄")}</div>
-          <div>
-            <h3 class="service-title"><a href="service.html?id=${encodeURIComponent(svc.id)}">${escapeHtml(svc.title)}</a></h3>
-            <div class="service-tagline">${escapeHtml(svc.tagline || "")}</div>
-          </div>
-        </div>
-        <p class="service-desc"><a href="service.html?id=${encodeURIComponent(svc.id)}">${escapeHtml(svc.description || "")}</a></p>
-        <div class="service-links">
-          <a href="service.html?id=${encodeURIComponent(svc.id)}#documents">📋 Documents required</a>
-          ${hasVideo ? `<a href="service.html?id=${encodeURIComponent(svc.id)}#guide">▶ Watch guide</a>` : ``}
+          <h3 class="service-title"><a href="service.html?id=${encodeURIComponent(svc.id)}">${escapeHtml(svc.title)}</a></h3>
         </div>
         <div class="service-actions">
           <a class="btn btn-outline" href="service.html?id=${encodeURIComponent(svc.id)}#documents">View details</a>
           <a class="btn btn-primary" href="service.html?id=${encodeURIComponent(svc.id)}#apply">Apply Now</a>
+          ${hasVideo ? `<button type="button" class="btn btn-youtube" data-video="${escapeHtml(svc.id)}" aria-label="Watch ${escapeHtml(svc.title)} YouTube guide">▶ YouTube</button>` : ``}
         </div>
-        <button type="button" class="copy-link" data-copy-id="${escapeHtml(svc.id)}">🔗 Copy page link</button>
       </article>
     `;
   }
@@ -167,6 +159,7 @@
     const videoBtn = e.target.closest("[data-video]");
     const applyBtn = e.target.closest("[data-apply]");
     const copyBtn = e.target.closest("[data-copy-id]");
+    if (videoBtn) openVideoModal(videoBtn.getAttribute("data-video"));
     if (copyBtn) {
       const link = new URL("service.html?id=" + encodeURIComponent(copyBtn.dataset.copyId), location.href).href;
       (navigator.clipboard?.writeText(link) || Promise.reject()).then(() => {
