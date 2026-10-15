@@ -66,7 +66,6 @@
           </div>
         </div>
         <p class="service-desc"><a href="service.html?id=${encodeURIComponent(svc.id)}">${escapeHtml(svc.description || "")}</a></p>
-        ${svc.tags?.length ? `<p class="service-tags">${svc.tags.map(tag => `<span>${escapeHtml(tag)}</span>`).join("")}</p>` : ""}
         <div class="service-links">
           <a href="service.html?id=${encodeURIComponent(svc.id)}#documents">📋 Documents required</a>
           ${hasVideo ? `<a href="service.html?id=${encodeURIComponent(svc.id)}#guide">▶ Watch guide</a>` : ``}
