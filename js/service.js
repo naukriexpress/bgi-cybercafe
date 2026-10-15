@@ -31,7 +31,7 @@
     } catch (_) {}
     target.innerHTML = '<h1>' + safe(service.title) + '</h1>' +
       '<p><strong>' + safe(service.tagline) + '</strong></p>' +
-      '<h2>About this service</h2><p>' + safe(service.description || "Contact us to discuss this service.") + '</p>' +
+      '<details class="about-service"><summary>About this service</summary><p>' + safe(service.description || "Contact us to discuss this service.") + '</p></details>' +
       (service.tags?.length ? '<p class="service-tags">' + service.tags.map(tag => '<span>' + safe(tag) + '</span>').join("") + '</p>' : '') +
       '<h2 id="documents">Documents listed for this service</h2>' +
       (docs.length ? '<ul class="doc-list">' + docs.map(d => '<li>' + safe(d) + '</li>').join("") + '</ul>' : '<p>No document list is available yet. Ask us for the current requirements.</p>') +
