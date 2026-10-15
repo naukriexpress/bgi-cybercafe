@@ -877,3 +877,50 @@ html[data-theme="dark"] #news.news-section .news-launch-card {
     padding: 9px 11px;
   }
 }
+
+
+/* Keep the news popup trigger in the sticky header above the page content. */
+.news-header-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-top: 0;
+  padding-bottom: 10px;
+}
+.news-header-row .news-promo {
+  margin: 0;
+  border: 0;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: normal;
+  cursor: pointer;
+}
+
+/* Tone down the YouTube action while keeping its label clear in both themes. */
+#services .btn-youtube {
+  background: #f4c7c3;
+  color: #742424;
+  border: 1px solid #e9aaa5;
+}
+#services .btn-youtube:hover { background: #edb5b0; }
+html[data-theme="dark"] #services .btn-youtube {
+  background: #6a3341;
+  color: #ffe8ec;
+  border-color: #91505d;
+}
+html[data-theme="dark"] #services .btn-youtube:hover { background: #75404e; }
+
+/* The fixed jobs link is the only viewport-fixed control now. */
+body { padding-bottom: 0; }
+@media (max-width: 640px) {
+  body { padding-bottom: calc(82px + env(safe-area-inset-bottom)); }
+  .news-header-row {
+    padding-top: 0;
+    padding-bottom: 8px;
+  }
+  .news-header-row .news-promo {
+    font-size: 11px;
+    padding: 9px 11px;
+  }
+}
