@@ -16,17 +16,16 @@
     const jobsUrl = new URL(settings.jobsUrl || "https://www.naukriexpress.space/");
     if (jobsUrl.protocol === "https:") document.getElementById("jobsPromo").href = jobsUrl.href;
   } catch (_) {}
-  const newsCard = item => `<article class="service-card news-card">
-    <h3><a href="news-detail.html?id=${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a></h3>
-    <p class="service-desc">${escapeHtml(item.summary || item.body.slice(0, 160))}</p>
-    <a href="news-detail.html?id=${encodeURIComponent(item.id)}">Read full details →</a>
-  </article>`;
-  document.getElementById("heroNews").innerHTML = news.length
-    ? news.slice(0, 3).map(item => `<p class="hero-news-item"><a href="news-detail.html?id=${encodeURIComponent(item.id)}">${escapeHtml(item.title)}</a></p>`).join("")
-    : "<p>News will appear here when published.</p>";
-  document.getElementById("newsGrid").innerHTML = news.length
-    ? news.slice(0, 6).map(newsCard).join("")
-    : "<p>No news published yet.</p>";
+  const newsCard = item => {
+    const detailUrl = "news-detail.html?id=" + encodeURIComponent(item.id);
+    let sourceLink = "";
+    try {
+      const source = new URL(item.source_url);
+      if (source.protocol === "https:" || source.protocol === "http:") sourceLink = '<a href="' + escapeHtml(source.href) + '" target="_blank" rel="noopener noreferrer">Open official notice ↗</a>';
+    } catch (_) {}
+    return '<article class="service-card news-card"><h3><a href="' + detailUrl + '">' + escapeHtml(item.title) + '</a></h3><p class="service-desc">' + escapeHtml(item.summary || (item.body || "").slice(0, 160)) + '</p><a href="' + detailUrl + '">Read full details →</a>' + sourceLink + '</article>';
+  };
+  document.getElementById("newsModalList").innerHTML = news.length ? news.map(newsCard).join("") : "<p>No news published yet.</p>";
 
   /* ---------- Header / hero / footer text ---------- */
   setText("siteNameLbl", settings.siteName);
@@ -53,6 +52,24 @@
   /* ---------- Render service cards ---------- */
   const grid = document.getElementById("servicesGrid");
   grid.innerHTML = services.map(svc => renderCard(svc)).join("");
+  startServicesAutoscroll(grid);
+
+  function startServicesAutoscroll(scroller) {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let direction = 1, paused = false, frame;
+    const tick = () => {
+      if (!paused && scroller.scrollWidth > scroller.clientWidth + 2) {
+        const max = scroller.scrollWidth - scroller.clientWidth;
+        if (scroller.scrollLeft >= max - 1) direction = -1;
+        else if (scroller.scrollLeft <= 1) direction = 1;
+        scroller.scrollLeft += direction * 0.45;
+      }
+      frame = requestAnimationFrame(tick);
+    };
+    frame = requestAnimationFrame(tick);
+    const stop = () => { paused = true; cancelAnimationFrame(frame); };
+    ["pointerdown", "click", "focusin", "keydown", "touchstart"].forEach(type => scroller.addEventListener(type, stop, { once: true }));
+  }
 
   function renderCard(svc) {
     const hasVideo = svc.youtube && svc.youtube.trim().length > 0;
@@ -78,6 +95,11 @@
       </article>
     `;
   }
+
+  /* ---------- News popup ---------- */
+  const newsOverlay = document.getElementById("newsModalOverlay");
+  document.getElementById("openNewsModal").addEventListener("click", () => newsOverlay.classList.add("open"));
+  document.getElementById("newsModalClose").addEventListener("click", closeAllModals);
 
   /* ---------- Modals: document list ---------- */
   const docOverlay = document.getElementById("docModalOverlay");
@@ -117,12 +139,13 @@
   function closeAllModals() {
     docOverlay.classList.remove("open");
     videoOverlay.classList.remove("open");
+    newsOverlay.classList.remove("open");
     videoFrame.src = "";
   }
 
   document.getElementById("docModalClose").addEventListener("click", closeAllModals);
   document.getElementById("videoModalClose").addEventListener("click", closeAllModals);
-  [docOverlay, videoOverlay].forEach(ov => {
+  [docOverlay, videoOverlay, newsOverlay].forEach(ov => {
     ov.addEventListener("click", (e) => { if (e.target === ov) closeAllModals(); });
   });
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeAllModals(); });

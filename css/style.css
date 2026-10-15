@@ -590,3 +590,26 @@ html[data-theme="dark"] .mobile-menu-toggle { background: #352548; color: #fff; 
   flex: 0 0 min(310px, 82vw);
   scroll-snap-align: start;
 }
+
+
+/* Compact homepage intro, service carousel and news popup. */
+.home-title { padding: 16px 0 8px; }
+.home-title h1 { margin: 0; font-size: clamp(18px, 2.4vw, 27px); white-space: nowrap; }
+#services .grid-services { scroll-behavior: auto; }
+#services .grid-services:hover { cursor: grab; }
+.news-section { padding-top: 34px; }
+.news-section .section-head { margin-bottom: 14px; }
+.news-launch-card { display: flex; align-items: center; justify-content: space-between; gap: 16px; width: min(100%, 440px); padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); color: var(--ink-soft); font-size: 14px; }
+.news-modal { max-width: 760px; }
+.news-modal-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+.news-modal-list .service-card { padding: 16px; gap: 9px; }
+.news-modal-list .service-card h3 { font-size: 16px; }
+html[data-theme="dark"] .news-launch-card { background: #241a34; color: #c8bddb; border-color: #493657; }
+@media (max-width: 560px) {
+  .home-title h1 { white-space: normal; font-size: 18px; }
+  .news-modal-list { grid-template-columns: 1fr; }
+  .news-launch-card { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #services .grid-services { scroll-behavior: auto; }
+}
