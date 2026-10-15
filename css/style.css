@@ -814,3 +814,23 @@ html[data-theme="dark"] #news.news-section .news-launch-card {
     width: auto;
   }
 }
+
+
+/* The fixed news action uses the same gold pill design as Latest Job Updates. */
+.news-launch-card {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  justify-content: flex-start;
+}
+.news-launch-card .news-promo {
+  border: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 800;
+  line-height: normal;
+  cursor: pointer;
+}
