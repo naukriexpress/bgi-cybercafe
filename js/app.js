@@ -52,23 +52,34 @@
   /* ---------- Render service cards ---------- */
   const grid = document.getElementById("servicesGrid");
   grid.innerHTML = services.map(svc => renderCard(svc)).join("");
-  startServicesAutoscroll(grid);
+  const pauseServices = startServicesAutoscroll(grid);
+  const servicesSearch = document.getElementById("servicesSearch");
+  servicesSearch.addEventListener("focus", pauseServices, { once: true });
+  servicesSearch.addEventListener("input", () => {
+    const query = servicesSearch.value.trim().toLocaleLowerCase();
+    Array.from(grid.children).forEach(card => {
+      card.hidden = query !== "" && !card.textContent.toLocaleLowerCase().includes(query);
+    });
+    grid.scrollLeft = grid.scrollWidth - grid.clientWidth;
+  });
 
   function startServicesAutoscroll(scroller) {
-    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let direction = 1, paused = false, frame;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return () => {};
+    let direction = -1, paused = false, frame;
     const tick = () => {
       if (!paused && scroller.scrollWidth > scroller.clientWidth + 2) {
         const max = scroller.scrollWidth - scroller.clientWidth;
-        if (scroller.scrollLeft >= max - 1) direction = -1;
-        else if (scroller.scrollLeft <= 1) direction = 1;
+        if (scroller.scrollLeft <= 1) direction = 1;
+        else if (scroller.scrollLeft >= max - 1) direction = -1;
         scroller.scrollLeft += direction * 0.45;
       }
       frame = requestAnimationFrame(tick);
     };
+    scroller.scrollLeft = scroller.scrollWidth - scroller.clientWidth;
     frame = requestAnimationFrame(tick);
     const stop = () => { paused = true; cancelAnimationFrame(frame); };
     ["pointerdown", "click", "focusin", "keydown", "touchstart"].forEach(type => scroller.addEventListener(type, stop, { once: true }));
+    return stop;
   }
 
   function renderCard(svc) {
