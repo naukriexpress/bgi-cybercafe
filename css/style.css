@@ -631,3 +631,6 @@ html[data-theme="dark"] .services-search-wrap input { background: #241a34; color
   .services-search-wrap input, .services-promo-row { width: 100%; }
   .services-promo-row { align-items: flex-start; flex-direction: column; }
 }
+
+/* Make filtered service cards disappear despite the card's flex display. */
+#services .grid-services > [hidden] { display: none !important; }
