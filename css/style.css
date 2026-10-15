@@ -672,7 +672,7 @@ html[data-theme="dark"] #services .btn-youtube {
 html[data-theme="dark"] #services .btn-youtube:hover { background: #a91f1f; }
 
 @media (max-width: 640px) {
-  body { padding-bottom: calc(82px + env(safe-area-inset-bottom)); }
+  body { padding-bottom: calc(190px + env(safe-area-inset-bottom)); }
   #services .grid-services {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -776,5 +776,41 @@ html[data-theme="dark"] #services .btn-youtube:hover { background: #a91f1f; }
     bottom: 24px;
     z-index: 80;
     margin: 0;
+  }
+}
+
+
+/* Keep the existing news card and heading visible above the jobs link. */
+body { padding-bottom: 160px; }
+#news.news-section {
+  position: fixed;
+  right: 24px;
+  bottom: 88px;
+  z-index: 79;
+  width: min(440px, calc(100vw - 48px));
+  padding: 0;
+}
+#news.news-section .container {
+  width: 100%;
+  max-width: none;
+  padding: 0;
+}
+#news.news-section .section-head {
+  margin: 0 0 8px;
+}
+#news.news-section .news-launch-card {
+  width: 100%;
+  box-shadow: 0 8px 24px rgba(30, 16, 48, .14);
+}
+html[data-theme="dark"] #news.news-section .news-launch-card {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .35);
+}
+@media (max-width: 640px) {
+  body { padding-bottom: calc(190px + env(safe-area-inset-bottom)); }
+  #news.news-section {
+    left: 8px;
+    right: 8px;
+    bottom: calc(74px + env(safe-area-inset-bottom));
+    width: auto;
   }
 }
