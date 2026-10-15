@@ -766,3 +766,15 @@ html[data-theme="dark"] #services .btn-youtube:hover { background: #a91f1f; }
     scroll-snap-align: none;
   }
 }
+
+
+/* Keep the jobs updates link in the same viewport position while scrolling. */
+@media (min-width: 641px) {
+  #services .services-promo-row .jobs-promo {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 80;
+    margin: 0;
+  }
+}
