@@ -15,14 +15,19 @@ function mapSettings(row) {
   return { siteName: row.site_name, tagline: row.tagline, ticker: row.ticker, whatsappNumber: row.whatsapp_number, address: row.address, hours: row.hours, jobsUrl: row.jobs_url || DEFAULT_SETTINGS.jobsUrl };
 }
 
-async function ccLoadDB() {
+async function ccLoadDB(options = {}) {
+  const includeSettings = options.settings !== false;
+  const includeServices = options.services !== false;
+  const includeMasterDocuments = options.masterDocuments ?? ccIsAdminPage;
+  const includeNews = options.news !== false;
+  const skip = { data: null, error: null };
   const [settingsResult, servicesResult, documentsResult, newsResult] = await Promise.all([
-    ccSupabase.from("settings").select("*").eq("id", 1).maybeSingle(),
-    ccSupabase.from("services").select("*").order("sort_order", { ascending: true }),
-    ccSupabase.from("master_documents").select("name").order("sort_order", { ascending: true }),
-    ccSupabase.from("news").select("*").order("published_at", { ascending: false })
+    includeSettings ? ccSupabase.from("settings").select("*").eq("id", 1).maybeSingle() : Promise.resolve(skip),
+    includeServices ? ccSupabase.from("services").select("*").order("sort_order", { ascending: true }) : Promise.resolve(skip),
+    includeMasterDocuments ? ccSupabase.from("master_documents").select("name").order("sort_order", { ascending: true }) : Promise.resolve(skip),
+    includeNews ? ccSupabase.from("news").select("*").order("published_at", { ascending: false }) : Promise.resolve(skip)
   ]);
-  const error = settingsResult.error || servicesResult.error || documentsResult.error;
+  const error = settingsResult.error || servicesResult.error || documentsResult.error || newsResult.error;
   if (error) throw error;
   return {
     settings: mapSettings(settingsResult.data),
