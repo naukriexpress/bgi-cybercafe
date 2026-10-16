@@ -939,3 +939,73 @@ body { padding-bottom: 0; }
     padding: 9px 11px;
   }
 }
+
+
+/* Put the news popup in the main navigation, alongside the site sections. */
+.nav-links .nav-news-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #eed895;
+  border-radius: 999px;
+  background: #fff4d3;
+  color: #422d12;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .12s ease;
+}
+.nav-links .nav-news-link:hover {
+  background: #ffedbd;
+  border-color: #dfc578;
+}
+.nav-links .nav-news-link:active { transform: translateY(1px); }
+.nav-links .nav-news-link .jobs-promo-dot {
+  flex: 0 0 9px;
+  background: #bd8d24;
+  box-shadow: 0 0 0 4px rgba(189, 141, 36, .16);
+}
+html[data-theme="dark"] .nav-links .nav-news-link {
+  background: #3c3040;
+  border-color: #735e3c;
+  color: #ffedbd;
+}
+html[data-theme="dark"] .nav-links .nav-news-link:hover {
+  background: #4a3a4e;
+  border-color: #927547;
+}
+html[data-theme="dark"] .nav-links .nav-news-link .jobs-promo-dot {
+  background: #d3aa4b;
+  box-shadow: 0 0 0 4px rgba(211, 170, 75, .18);
+}
+@media (max-width: 880px) {
+  .nav-links .nav-news-link {
+    width: 100%;
+    justify-content: flex-start;
+    margin: 2px 0;
+    padding: 10px 12px;
+    border-radius: 9px;
+    font-size: 14px;
+  }
+}
+
+/* A brief reveal when mobile visitors open a service detail page. */
+@keyframes service-detail-enter {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (max-width: 640px) {
+  .service-details > * {
+    animation: service-detail-enter .38s ease-out both;
+  }
+  .service-details > *:nth-child(n + 2) { animation-delay: .04s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .service-details > * { animation: none !important; }
+}
