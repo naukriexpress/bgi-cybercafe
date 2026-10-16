@@ -3,7 +3,7 @@
   const targetList = document.getElementById("newsList");
   const targetDetail = document.getElementById("newsDetail");
   try {
-    const { news } = await ccLoadDB();
+    const { news } = await ccLoadDB({ settings: false, services: false, masterDocuments: false });
     if (targetList) targetList.innerHTML = news.length ? news.map(n =>
       '<article class="service-card news-card"><h2><a href="news-detail.html?id=' + encodeURIComponent(n.id) + '">' + safe(n.title) + '</a></h2><p>' + safe(n.summary || n.body.slice(0, 180)) + '</p><a href="news-detail.html?id=' + encodeURIComponent(n.id) + '">Read full details →</a></article>'
     ).join("") : "<p>No news published yet.</p>";
