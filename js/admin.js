@@ -20,12 +20,13 @@
     loginError.style.display = "none";
     const email = document.getElementById("loginEmail").value.trim();
     const entered = document.getElementById("loginPassword").value;
-    const { error } = await ccLogin(email, entered);
-    if (!error) {
-      try { await showDashboard(); }
-      catch (loadError) { loginError.textContent = loadError.message; loginError.style.display = "block"; }
-    } else {
-      loginError.textContent = error.message || "Login failed.";
+    try {
+      const { error } = await ccLogin(email, entered);
+      if (error) throw error;
+      await showDashboard();
+    } catch (_) {
+      document.getElementById("loginPassword").value = "";
+      loginError.textContent = "Unable to sign in. Check your email and password, then try again.";
       loginError.style.display = "block";
     }
   });
@@ -302,15 +303,33 @@
 
   /* ---------- Security ---------- */
   document.getElementById("changePasswordBtn").addEventListener("click", async () => {
-    const next = document.getElementById("newPassword").value;
-    if (!next || next.length < 8) {
-      flash("passwordSaveMsg", "Password must be at least 8 characters", true);
+    const currentInput = document.getElementById("currentPassword");
+    const nextInput = document.getElementById("newPassword");
+    const current = currentInput.value;
+    const next = nextInput.value;
+    const strongEnough = next.length >= 12
+      && /[a-z]/.test(next)
+      && /[A-Z]/.test(next)
+      && /[0-9]/.test(next)
+      && /[^A-Za-z0-9]/.test(next);
+    if (!current) {
+      flash("passwordSaveMsg", "Enter your current password to confirm this change.", true);
       return;
     }
-    const { error } = await ccChangePassword(next);
-    if (error) { flash("passwordSaveMsg", error.message, true); return; }
-    document.getElementById("newPassword").value = "";
-    flash("passwordSaveMsg", "Password updated ✓");
+    if (!strongEnough) {
+      flash("passwordSaveMsg", "Use 12+ characters with uppercase, lowercase, a number, and a symbol.", true);
+      return;
+    }
+    try {
+      const { error } = await ccChangePassword(next, current);
+      if (error) throw error;
+      currentInput.value = "";
+      nextInput.value = "";
+      flash("passwordSaveMsg", "Password updated ✓");
+    } catch (_) {
+      currentInput.value = "";
+      flash("passwordSaveMsg", "Password could not be updated. Check the current password and try again.", true);
+    }
   });
 
   document.getElementById("resetAllBtn").addEventListener("click", () => {
