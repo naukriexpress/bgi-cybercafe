@@ -3,15 +3,17 @@
    ============================================================ */
 
 (async function () {
-  let db;
-  try {
-    db = await ccLoadDB();
-  } catch (error) {
-    console.error(error);
-    document.getElementById("servicesGrid").innerHTML = `<p>Website data could not load. Please check Supabase configuration.</p>`;
-    return;
+  let db = window.CC_INITIAL_DATA ? JSON.parse(JSON.stringify(window.CC_INITIAL_DATA)) : null;
+  if (!db) {
+    try {
+      db = await ccLoadDB();
+    } catch (error) {
+      console.error(error);
+      document.getElementById("servicesGrid").innerHTML = `<p>Website data could not load. Please check Supabase configuration.</p>`;
+      return;
+    }
   }
-  const { settings, services, news } = db;
+  let { settings, services, news } = db;
   try {
     const jobsUrl = new URL(settings.jobsUrl || "https://www.naukriexpress.space/");
     if (jobsUrl.protocol === "https:") document.getElementById("jobsPromo").href = jobsUrl.href;
@@ -214,5 +216,36 @@
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;");
+  }
+
+  // Refresh from Supabase after the GitHub snapshot has already rendered.
+  if (window.CC_INITIAL_DATA) {
+    ccLoadDB().then(fresh => {
+      db = fresh;
+      ({ settings, services, news } = fresh);
+      setText("siteNameLbl", settings.siteName);
+      setText("siteTaglineLbl", settings.tagline);
+      setText("footerName", settings.siteName);
+      setText("statCount", services.length + "+");
+      setText("contactAddress", "📍 " + settings.address);
+      setText("contactHours", "🕒 " + settings.hours);
+      setText("contactPhone", "📱 " + formatPhoneDisplay(settings.whatsappNumber));
+      t1.textContent = settings.ticker;
+      t2.textContent = settings.ticker;
+      document.getElementById("contactWhatsapp").href = buildWhatsAppLink(
+        settings.whatsappNumber,
+        `Hello ${settings.siteName}, I need help figuring out which service and documents I need.`
+      );
+      try {
+        const jobsUrl = new URL(settings.jobsUrl || "https://www.naukriexpress.space/");
+        if (jobsUrl.protocol === "https:") document.getElementById("jobsPromo").href = jobsUrl.href;
+      } catch (_) {}
+      document.getElementById("newsModalList").innerHTML = news.length ? news.map(newsCard).join("") : "<p>No news published yet.</p>";
+      grid.innerHTML = services.map(svc => renderCard(svc)).join("");
+      const query = servicesSearch.value.trim().toLocaleLowerCase();
+      Array.from(grid.children).forEach(card => {
+        card.hidden = query !== "" && !card.textContent.toLocaleLowerCase().includes(query);
+      });
+    }).catch(error => console.warn("Supabase refresh unavailable; showing the saved site snapshot.", error));
   }
 })();
