@@ -1167,3 +1167,35 @@ html[data-theme="dark"] .news-card-source:hover {
   .news-modal-list .news-card:hover,
   .news-card-details:hover { transform: none; }
 }
+
+/* Lightly refresh service cards while keeping the current page layout. */
+#services .service-card {
+  border-color: #e3d8f1;
+  background: linear-gradient(150deg, #fff 0%, #fcfaff 100%);
+  box-shadow: 0 7px 20px rgba(34, 17, 54, .07);
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+#services .service-card:hover {
+  transform: translateY(-3px);
+  border-color: #baa1dd;
+  box-shadow: 0 15px 30px rgba(34, 17, 54, .13);
+}
+#services .service-icon {
+  border: 1px solid rgba(133, 93, 184, .10);
+}
+html[data-theme="dark"] #services .service-card {
+  border-color: #514062;
+  background: linear-gradient(150deg, #2c223b 0%, #251a34 100%);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .20);
+}
+html[data-theme="dark"] #services .service-card:hover {
+  border-color: #8065a1;
+  box-shadow: 0 15px 32px rgba(0, 0, 0, .32);
+}
+html[data-theme="dark"] #services .service-icon {
+  border-color: rgba(219, 195, 255, .12);
+}
+@media (prefers-reduced-motion: reduce) {
+  #services .service-card { transition: none; }
+  #services .service-card:hover { transform: none; }
+}
