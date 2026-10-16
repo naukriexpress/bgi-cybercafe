@@ -21,9 +21,11 @@
     let sourceLink = "";
     try {
       const source = new URL(item.source_url);
-      if (source.protocol === "https:" || source.protocol === "http:") sourceLink = '<a href="' + escapeHtml(source.href) + '" target="_blank" rel="noopener noreferrer">Open official notice ↗</a>';
+      if (source.protocol === "https:" || source.protocol === "http:") {
+        sourceLink = '<a class="news-card-link news-card-source" href="' + escapeHtml(source.href) + '" target="_blank" rel="noopener noreferrer">Official notice <span aria-hidden="true">↗</span></a>';
+      }
     } catch (_) {}
-    return '<article class="service-card news-card"><h3><a href="' + detailUrl + '">' + escapeHtml(item.title) + '</a></h3><p class="service-desc">' + escapeHtml(item.summary || (item.body || "").slice(0, 160)) + '</p><a href="' + detailUrl + '">Read full details →</a>' + sourceLink + '</article>';
+    return '<article class="service-card news-card"><span class="news-card-label">News &amp; updates</span><h3 class="news-card-title"><a href="' + detailUrl + '">' + escapeHtml(item.title) + '</a></h3><p class="news-card-summary">' + escapeHtml(item.summary || (item.body || "").slice(0, 160)) + '</p><div class="news-card-actions"><a class="news-card-link news-card-details" href="' + detailUrl + '">Read full details <span aria-hidden="true">→</span></a>' + sourceLink + '</div></article>';
   };
   document.getElementById("newsModalList").innerHTML = news.length ? news.map(newsCard).join("") : "<p>No news published yet.</p>";
 
