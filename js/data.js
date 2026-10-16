@@ -54,5 +54,5 @@ async function ccDeleteNews(id) {
 async function ccLogin(email, password) { return ccSupabase.auth.signInWithPassword({ email, password }); }
 async function ccLogout() { return ccSupabase.auth.signOut(); }
 async function ccSession() { return (await ccSupabase.auth.getSession()).data.session; }
-async function ccChangePassword(password) { return ccSupabase.auth.updateUser({ password }); }
+async function ccChangePassword(password, currentPassword) { return ccSupabase.auth.updateUser({ password, current_password: currentPassword }); }
 function ccUid(prefix) { return prefix + "-" + crypto.randomUUID(); }

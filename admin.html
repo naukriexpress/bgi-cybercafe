@@ -18,11 +18,11 @@
     <p style="text-align:center;color:var(--ink-soft);font-size:13.5px;margin-top:-6px;">Manage your services, documents and ticker.</p>
     <label class="field">
       <span>Email</span>
-      <input type="email" id="loginEmail" placeholder="Admin email" required />
+      <input type="email" id="loginEmail" placeholder="Admin email" autocomplete="username" required />
     </label>
     <label class="field">
       <span>Password</span>
-      <input type="password" id="loginPassword" placeholder="Supabase password" required />
+      <input type="password" id="loginPassword" placeholder="Supabase password" autocomplete="current-password" required />
     </label>
     <p class="login-error" id="loginError" style="display:none;">Incorrect password, please try again.</p>
     <button type="submit" class="btn btn-primary btn-block">Log in</button>
@@ -153,7 +153,8 @@
       <h2>Change admin password</h2>
       <p class="panel-sub">Keep this private — anyone with it can edit your site.</p>
       <div class="card-form">
-        <label class="field"><span>New password</span><input id="newPassword" type="password" /></label>
+        <label class="field"><span>Current password</span><input id="currentPassword" type="password" autocomplete="current-password" required /></label>
+        <label class="field"><span>New password</span><input id="newPassword" type="password" autocomplete="new-password" minlength="12" required aria-describedby="passwordRequirements" /><small id="passwordRequirements">Use at least 12 characters, including uppercase and lowercase letters, a number, and a symbol. A unique password from a password manager is safest.</small></label>
         <button type="button" class="btn btn-primary" id="changePasswordBtn">Update password</button>
         <span class="save-msg" id="passwordSaveMsg"></span>
       </div>
