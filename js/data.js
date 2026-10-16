@@ -1,7 +1,14 @@
 /* Supabase data layer. Fill js/config.js after creating the project. */
 const DEFAULT_SETTINGS = { siteName: "Cyber Cafe Services", tagline: "Aapke sarkari documents, ek hi jagah", ticker: "New services are available. Contact us on WhatsApp for details.", whatsappNumber: "91XXXXXXXXXX", address: "Your Cyber Cafe, Main Road, Your City", hours: "Mon – Sat, 9:00 AM – 8:00 PM", jobsUrl: "https://www.naukriexpress.space/" };
 
-const ccSupabase = window.supabase.createClient(window.CC_CONFIG.SUPABASE_URL, window.CC_CONFIG.SUPABASE_ANON_KEY);
+const ccIsAdminPage = window.location.pathname.toLowerCase().endsWith("/admin.html");
+const ccSupabase = window.supabase.createClient(
+  window.CC_CONFIG.SUPABASE_URL,
+  window.CC_CONFIG.SUPABASE_ANON_KEY,
+  ccIsAdminPage
+    ? { auth: { persistSession: false, autoRefreshToken: true, detectSessionInUrl: false } }
+    : undefined
+);
 
 function mapSettings(row) {
   if (!row) return { ...DEFAULT_SETTINGS };
@@ -54,5 +61,10 @@ async function ccDeleteNews(id) {
 async function ccLogin(email, password) { return ccSupabase.auth.signInWithPassword({ email, password }); }
 async function ccLogout() { return ccSupabase.auth.signOut(); }
 async function ccSession() { return (await ccSupabase.auth.getSession()).data.session; }
+async function ccIsAdmin() {
+  const { data, error } = await ccSupabase.rpc("is_app_admin");
+  if (error) throw error;
+  return data === true;
+}
 async function ccChangePassword(password, currentPassword) { return ccSupabase.auth.updateUser({ password, current_password: currentPassword }); }
 function ccUid(prefix) { return prefix + "-" + crypto.randomUUID(); }

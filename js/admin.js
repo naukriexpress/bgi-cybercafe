@@ -12,7 +12,13 @@
   const loginError = document.getElementById("loginError");
 
   if (await ccSession()) {
-    await showDashboard();
+    try {
+      await showDashboard();
+    } catch (_) {
+      await ccLogout();
+      loginError.textContent = "This account is not authorized for the admin panel. Sign in with the admin account.";
+      loginError.style.display = "block";
+    }
   }
 
   loginForm.addEventListener("submit", async (e) => {
@@ -32,6 +38,10 @@
   });
 
   async function showDashboard() {
+    if (!await ccIsAdmin()) {
+      await ccLogout();
+      throw new Error("Admin access required");
+    }
     db = await ccLoadDB();
     loginScreen.style.display = "none";
     dashboard.style.display = "grid";
