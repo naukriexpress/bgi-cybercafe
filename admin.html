@@ -101,6 +101,18 @@
         <label class="field"><span>Search tags (comma separated)</span><input id="svcTags" type="text" placeholder="e.g. caste validity, Maharashtra form, Akola" /><small>Use relevant terms only. Tags cannot guarantee Google ranking.</small></label>
         <label class="field"><span>YouTube video link (optional)</span><input id="svcYoutube" type="text" placeholder="https://www.youtube.com/watch?v=..." /></label>
 
+        <div class="detail-editor-block">
+          <h3>Service detail page content</h3>
+          <p class="panel-sub">Everything below is saved with this service and shown on its View Details page. Leave optional sections empty to hide them.</p>
+          <label class="field"><span>Document buttons (one name per item)</span><div id="detailDocRows"></div><button type="button" class="btn btn-outline" id="addDetailDocBtn">+ Add document button</button></label>
+          <label class="field"><span>Document Required — details (each item has a title and short description)</span><div id="detailRequiredRows"></div><button type="button" class="btn btn-outline" id="addRequiredDocBtn">+ Add required document</button></label>
+          <label class="field"><span>Important Guidelines (one item per line)</span><div id="detailGuidelineRows"></div><button type="button" class="btn btn-outline" id="addGuidelineBtn">+ Add guideline</button></label>
+          <label class="field"><span>Important Points (title + short description)</span><div id="detailPointRows"></div><button type="button" class="btn btn-outline" id="addPointBtn">+ Add point</button></label>
+          <label class="field"><span>Important Notes</span><textarea id="detailNotes" rows="3" placeholder="Optional notes shown below the points"></textarea></label>
+          <label class="field"><span>Additional Details section title</span><input id="detailExtraTitle" type="text" placeholder="e.g. Important Details" /></label>
+          <label class="field"><span>Additional Details (title + short description)</span><div id="detailExtraRows"></div><button type="button" class="btn btn-outline" id="addExtraBtn">+ Add detail</button></label>
+        </div>
+
         <div class="field">
           <span>Documents required</span>
           <div class="doc-picker" id="docPicker"></div>
