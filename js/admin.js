@@ -112,7 +112,9 @@
 
   function renderDocPicker() {
     const wrap = document.getElementById("docPicker");
-    wrap.innerHTML = db.masterDocuments.map(doc => `
+    // Show all master documents plus names currently typed in the linked detail-button list.
+    const allDocs = [...new Set([...(db.masterDocuments || []), ...Array.from(selectedDocs), ...((detailState && detailState.documents) || []).filter(Boolean)])];
+    wrap.innerHTML = allDocs.map(doc => `
       <label>
         <input type="checkbox" value="${escapeAttr(doc)}" ${selectedDocs.has(doc) ? "checked" : ""} />
         ${escapeHtml(doc)}
@@ -120,7 +122,11 @@
     `).join("");
     wrap.querySelectorAll("input[type=checkbox]").forEach(cb => {
       cb.addEventListener("change", () => {
+        syncDetailStateFromDOM();
         if (cb.checked) selectedDocs.add(cb.value); else selectedDocs.delete(cb.value);
+        detailState.documents = Array.from(selectedDocs);
+        renderAllDetailRows();
+        renderDocPicker();
       });
     });
   }
@@ -201,7 +207,18 @@
   // Keep the in-progress editor state synchronized on every keystroke so Add/Remove never clears typed text.
   ["detailDocRows", "detailRequiredRows", "detailGuidelineRows", "detailPointRows", "detailExtraRows"].forEach(id => {
     const container = document.getElementById(id);
-    if (container) container.addEventListener("input", () => syncDetailStateFromDOM());
+    if (container) container.addEventListener("input", () => {
+      syncDetailStateFromDOM();
+      if (id === "detailDocRows") {
+        selectedDocs = new Set(detailState.documents.filter(name => typeof name === "string" && name.trim()).map(name => name.trim()));
+        renderDocPicker();
+      }
+    });
+    if (container && id === "detailDocRows") container.addEventListener("click", event => {
+      if (event.target.closest("[data-detail-remove]")) {
+        setTimeout(() => { syncDetailStateFromDOM(); selectedDocs = new Set(detailState.documents.filter(name => typeof name === "string" && name.trim()).map(name => name.trim())); renderDocPicker(); }, 0);
+      }
+    });
   });
   document.getElementById("detailNotes").addEventListener("input", () => { detailState.notes = document.getElementById("detailNotes").value; });
   document.getElementById("detailExtraTitle").addEventListener("input", () => { detailState.extraTitle = document.getElementById("detailExtraTitle").value; });
@@ -278,11 +295,13 @@
       tagline: editorFields.tagline.value.trim(),
       description: editorFields.desc.value.trim(),
       youtube: editorFields.youtube.value.trim(),
-      documents: Array.from(selectedDocs),
+      documents: Array.from(new Set([...selectedDocs, ...readDetailContent().documents.filter(Boolean)])),
       detailContent: readDetailContent(),
       tags: [...new Set(editorFields.tags.value.split(",").map(x => x.trim()).filter(Boolean))].slice(0, 20)
     };
 
+    // Promote every document button into the shared master list so it remains available in the checkbox picker.
+    record.documents.forEach(name => { if (name && !db.masterDocuments.includes(name)) db.masterDocuments.push(name); });
     const idx = db.services.findIndex(s => s.id === id);
     const previous = idx >= 0 ? db.services[idx] : null;
     if (idx >= 0) db.services[idx] = record; else db.services.push(record);
