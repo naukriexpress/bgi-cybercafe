@@ -151,7 +151,7 @@
       const objectItem = item && typeof item === "object";
       const title = objectItem ? item.title : item;
       const description = objectItem ? item.description : "";
-      return '<div class="detail-edit-row" data-detail-row="' + kind + '">' +
+      return '<div class="detail-edit-row detail-edit-row-' + kind + '" data-detail-row="' + kind + '">' +
         (kind === "documents" || kind === "guidelines"
           ? rowInput(title, kind === "documents" ? "Button label, e.g. Aadhaar Card" : "Guideline text", kind + "-title-" + index)
           : rowInput(title, "Title", kind + "-title-" + index)) +
