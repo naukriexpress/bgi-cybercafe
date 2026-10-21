@@ -32,7 +32,7 @@
       const url = new URL(videoUrl);
       if (["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be", "www.youtu.be"].includes(url.hostname)) {
         const videoId = url.hostname.includes("youtu.be") ? url.pathname.slice(1) : url.searchParams.get("v");
-        if (videoId && /^[A-Za-z0-9_-]{11}$/.test(videoId)) guide = '<h2 id="guide">Video guide</h2><div class="video-wrap"><iframe title="Video guide" loading="lazy" src="https://www.youtube-nocookie.com/embed/' + videoId + '" allowfullscreen></iframe></div>';
+        if (videoId && /^[A-Za-z0-9_-]{11}$/.test(videoId)) guide = '<h2 id="guide">Step-by-step guidance: Form Filling से Certificate तक</h2><div class="video-wrap"><iframe title="Video guide" loading="lazy" src="https://www.youtube-nocookie.com/embed/' + videoId + '" allowfullscreen></iframe></div>';
       }
     } catch (_) {}
     const buttonSection = detailButtons.length ? '<div class="detail-document-buttons" aria-label="Documents">' + detailButtons.map((name, index) => '<a class="detail-document-button" href="#required-documents">' + safe(name) + '</a>').join("") + '</div>' : "";
