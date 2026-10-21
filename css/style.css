@@ -1513,3 +1513,41 @@ html[data-theme="dark"] .services-promo-row {
   #services .service-card:hover,
   #services .service-actions .btn:hover { transform: none; }
 }
+
+
+/* Admin-managed service detail sections */
+.service-details .service-short-line { margin: 10px 0 8px; color: var(--purple-700); font-weight: 750; font-size: 1.08rem; }
+.service-details .service-intro { margin: 0 0 22px; color: var(--ink-soft); line-height: 1.75; }
+.detail-document-buttons { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0 30px; }
+.detail-document-button {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 11px 16px; border-radius: 12px; border: 1px solid #8c68b7;
+  background: linear-gradient(135deg, #35204c, #4a2c65); color: #fff;
+  text-decoration: none; font-weight: 700; font-size: .94rem;
+  box-shadow: 0 5px 14px rgba(45, 24, 65, .12);
+}
+.detail-document-button:hover { transform: translateY(-1px); }
+.detail-content-section { margin: 28px 0; }
+.detail-content-section > h2 { margin-bottom: 16px; }
+.detail-item-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.detail-content-card {
+  display: flex; align-items: flex-start; gap: 13px; padding: 18px;
+  border: 1px solid var(--line); border-radius: 15px;
+  background: var(--white); box-shadow: 0 8px 24px rgba(39, 20, 58, .055);
+}
+.detail-number {
+  flex: 0 0 34px; width: 34px; height: 34px; display: grid; place-items: center;
+  border-radius: 10px; background: var(--purple-100); color: var(--purple-800); font-weight: 800;
+}
+.detail-content-card h3 { margin: 2px 0 7px; font-size: 1rem; }
+.detail-content-card p { margin: 0; color: var(--ink-soft); line-height: 1.65; white-space: pre-line; }
+.detail-guidelines { padding-left: 22px; line-height: 1.8; }
+.detail-guidelines li { margin: 7px 0; }
+.detail-notes { padding: 18px 20px; border-left: 4px solid #d9aa36; background: var(--purple-50); border-radius: 0 12px 12px 0; }
+.detail-notes p { white-space: pre-line; line-height: 1.75; }
+.service-disclaimer { margin-top: 26px; color: var(--ink-soft); font-size: .9rem; line-height: 1.7; }
+@media (max-width: 650px) {
+  .detail-item-grid { grid-template-columns: minmax(0, 1fr); }
+  .detail-content-card { padding: 15px; }
+  .detail-document-button { flex: 1 1 auto; }
+}
