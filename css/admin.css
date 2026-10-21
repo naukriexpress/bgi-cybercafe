@@ -431,3 +431,10 @@
 @media (max-width: 650px) {
   .detail-edit-row, .detail-edit-row:has(textarea) { grid-template-columns: minmax(0, 1fr); }
 }
+
+.detail-edit-row-documents, .detail-edit-row-guidelines { grid-template-columns: minmax(0, 1fr) auto; }
+.detail-edit-row-requiredDocuments, .detail-edit-row-points, .detail-edit-row-extraSections { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto; }
+@media (max-width: 650px) {
+  .detail-edit-row-documents, .detail-edit-row-guidelines,
+  .detail-edit-row-requiredDocuments, .detail-edit-row-points, .detail-edit-row-extraSections { grid-template-columns: minmax(0, 1fr); }
+}
