@@ -1582,3 +1582,34 @@ html[data-theme="dark"] .detail-notes {
 }
 html[data-theme="dark"] .detail-notes h2,
 html[data-theme="dark"] .detail-notes p { color: #f4efff; }
+
+
+/* Service detail page visual refinements — keep the homepage unchanged */
+.service-details > h1 {
+  color: var(--gold);
+}
+html[data-theme="dark"] .service-details > h1 {
+  color: #e8b83f;
+}
+.service-details .detail-content-section {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 20px;
+  background: rgba(255, 255, 255, .34);
+}
+.service-details .detail-content-section > h2 {
+  margin-bottom: 14px;
+}
+html[data-theme="dark"] .service-details .detail-content-section {
+  border-color: #59436d;
+  background: rgba(32, 22, 45, .55);
+}
+html[data-theme="dark"] .service-details .detail-content-section > h2 {
+  color: #f4efff;
+}
+@media (max-width: 650px) {
+  .service-details .detail-content-section {
+    padding: 15px;
+    border-radius: 15px;
+  }
+}
