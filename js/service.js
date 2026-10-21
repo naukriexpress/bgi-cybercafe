@@ -36,7 +36,8 @@
       }
     } catch (_) {}
     const buttonSection = detailButtons.length ? '<div class="detail-document-buttons" aria-label="Documents">' + detailButtons.map((name, index) => '<a class="detail-document-button" href="#required-documents">' + safe(name) + '</a>').join("") + '</div>' : "";
-    const requiredSection = requiredDocs.length ? '<section class="detail-content-section" id="required-documents"><h2>GST Registration Document Required</h2><div class="detail-item-grid">' + requiredDocs.map((item, index) => '<article class="detail-content-card"><span class="detail-number">' + (index + 1) + '</span><div><h3>' + safe(item.title || "") + '</h3><p>' + safe(item.description || "") + '</p></div></article>').join("") + '</div></section>' : "";
+    const requiredSection = requiredDocs.length ? '<section class="detail-content-section" id="required-documents"><h2>GST Registration Document Required</h2><div class="detail-item-grid">' + requiredDocs.map((item, index) => '<article class="detail-content-card"><span class="detail-number">' + (index + 1) + '</span><div><h3>' + safe(item.title || "") + '</h3><p>' + safe(item.description || "") + '</p></div></article>').join("") + '</div></section>' : ""; 
+    const emailChecklist = /gst/i.test(service.title || "") ? '<div class="email-checklist-row"><label class="email-checklist-label" for="validPersonalEmail"><input type="checkbox" id="validPersonalEmail"> <span>Valid Personal Email ID</span></label></div>' : "";
     const guidelineSection = guidelines.length ? '<section class="detail-content-section"><h2>Important Guidelines</h2><ul class="detail-guidelines">' + guidelines.map(item => '<li>' + safe(item) + '</li>').join("") + '</ul></section>' : "";
     const pointsSection = points.length ? '<section class="detail-content-section"><h2>Registration Important Points</h2><div class="detail-item-grid">' + points.map((item, index) => '<article class="detail-content-card"><span class="detail-number">' + (index + 1) + '</span><div><h3>' + safe(item.title || "") + '</h3><p>' + safe(item.description || "") + '</p></div></article>').join("") + '</div></section>' : "";
     const notesSection = detail.notes ? '<section class="detail-content-section detail-notes"><h2>Important Notes</h2><p>' + safe(detail.notes).replace(/\\n/g, "<br>") + '</p></section>' : "";
@@ -45,7 +46,7 @@
     target.innerHTML = '<h1>' + safe(service.title) + '</h1>' +
       (service.tagline ? '<p class="service-short-line">' + safe(service.tagline) + '</p>' : '') +
       (service.description ? '<p class="service-intro">' + safe(service.description) + '</p>' : '') +
-      buttonSection + requiredSection + guidelineSection + pointsSection + notesSection + extraSection +
+      buttonSection + requiredSection + emailChecklist + guidelineSection + pointsSection + notesSection + extraSection +
       legacyDocs +
       '<p class="service-disclaimer">Document requirements, eligibility, fees and deadlines can change. Confirm them on the relevant official website before submitting an application. BGI Cybercafe assistance charges, if applicable, are separate from official fees.</p>' +
       guide +
@@ -55,6 +56,8 @@
       '<button class="btn btn-outline" type="button" id="copyServiceLink">Copy link</button></div>' +
       '<h2 id="apply">Apply with BGI Cybercafe</h2><p>Review the details above, then contact us to confirm the current documents, fees and next steps.</p>' +
       (phone ? '<p><a class="btn btn-primary" href="https://wa.me/' + phone + '?text=' + message + '" target="_blank" rel="noopener noreferrer">Continue on WhatsApp ↗</a></p>' : '<p><a class="btn btn-primary" href="contact.html">Contact Us</a></p>');
+    const emailCheckbox = document.getElementById("validPersonalEmail");
+    if (emailCheckbox) emailCheckbox.addEventListener("change", () => emailCheckbox.closest(".email-checklist-label")?.classList.toggle("is-checked", emailCheckbox.checked));
     document.getElementById("copyServiceLink").addEventListener("click", async event => {
       try { await navigator.clipboard.writeText(pageLink); event.currentTarget.textContent = "✓ Link copied"; }
       catch (_) { window.prompt("Copy this link:", pageLink); }
