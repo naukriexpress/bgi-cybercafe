@@ -137,6 +137,74 @@
     renderMasterDocList();
   });
 
+  /* ---------- Dynamic service detail content editor ---------- */
+  let detailState = { documents: [], requiredDocuments: [], guidelines: [], points: [], notes: "", extraTitle: "", extraSections: [] };
+  const detailDefaults = () => ({ documents: [], requiredDocuments: [], guidelines: [], points: [], notes: "", extraTitle: "", extraSections: [] });
+  const rowInput = (value, placeholder, attr, multiline = false) => multiline
+    ? '<textarea rows="2" data-detail-field="' + attr + '" placeholder="' + placeholder + '">' + escapeHtml(value || "") + '</textarea>'
+    : '<input type="text" data-detail-field="' + attr + '" value="' + escapeAttr(value || "") + '" placeholder="' + placeholder + '" />';
+  function renderDetailRows(containerId, items, kind) {
+    const wrap = document.getElementById(containerId);
+    if (!wrap) return;
+    if (!items.length) { wrap.innerHTML = '<p class="panel-sub">No items added yet.</p>'; return; }
+    wrap.innerHTML = items.map((item, index) => {
+      const objectItem = item && typeof item === "object";
+      const title = objectItem ? item.title : item;
+      const description = objectItem ? item.description : "";
+      return '<div class="detail-edit-row" data-detail-row="' + kind + '">' +
+        (kind === "documents" || kind === "guidelines"
+          ? rowInput(title, kind === "documents" ? "Button label, e.g. Aadhaar Card" : "Guideline text", kind + "-title-" + index)
+          : rowInput(title, "Title", kind + "-title-" + index)) +
+        ((kind === "requiredDocuments" || kind === "points" || kind === "extraSections")
+          ? rowInput(description, "Short description", kind + "-description-" + index, true) : "") +
+        '<button type="button" class="btn btn-outline detail-remove" data-detail-remove="' + kind + '" data-index="' + index + '">Remove</button></div>';
+    }).join("");
+    wrap.querySelectorAll("[data-detail-remove]").forEach(button => button.addEventListener("click", () => {
+      const kindName = button.dataset.detailRemove;
+      const idx = Number(button.dataset.index);
+      const key = kindName === "requiredDocuments" ? "requiredDocuments" : kindName;
+      detailState[key].splice(idx, 1);
+      renderAllDetailRows();
+    }));
+  }
+  function renderAllDetailRows() {
+    renderDetailRows("detailDocRows", detailState.documents, "documents");
+    renderDetailRows("detailRequiredRows", detailState.requiredDocuments, "requiredDocuments");
+    renderDetailRows("detailGuidelineRows", detailState.guidelines, "guidelines");
+    renderDetailRows("detailPointRows", detailState.points, "points");
+    renderDetailRows("detailExtraRows", detailState.extraSections, "extraSections");
+    const notes = document.getElementById("detailNotes");
+    const extraTitle = document.getElementById("detailExtraTitle");
+    if (notes) notes.value = detailState.notes || "";
+    if (extraTitle) extraTitle.value = detailState.extraTitle || "";
+  }
+  function collectDetailRows(containerId, kind) {
+    const wrap = document.getElementById(containerId);
+    const rows = [...(wrap?.querySelectorAll("[data-detail-row]") || [])];
+    return rows.map(row => {
+      const inputs = [...row.querySelectorAll("[data-detail-field]")];
+      const title = inputs[0]?.value.trim() || "";
+      const description = inputs[1]?.value.trim() || "";
+      return kind === "documents" || kind === "guidelines" ? title : { title, description };
+    }).filter(item => typeof item === "string" ? item : (item.title || item.description));
+  }
+  function readDetailContent() {
+    return {
+      documents: collectDetailRows("detailDocRows", "documents"),
+      requiredDocuments: collectDetailRows("detailRequiredRows", "requiredDocuments"),
+      guidelines: collectDetailRows("detailGuidelineRows", "guidelines"),
+      points: collectDetailRows("detailPointRows", "points"),
+      notes: document.getElementById("detailNotes").value.trim(),
+      extraTitle: document.getElementById("detailExtraTitle").value.trim(),
+      extraSections: collectDetailRows("detailExtraRows", "extraSections")
+    };
+  }
+  document.getElementById("addDetailDocBtn").addEventListener("click", () => { detailState.documents.push(""); renderAllDetailRows(); });
+  document.getElementById("addRequiredDocBtn").addEventListener("click", () => { detailState.requiredDocuments.push({title:"",description:""}); renderAllDetailRows(); });
+  document.getElementById("addGuidelineBtn").addEventListener("click", () => { detailState.guidelines.push(""); renderAllDetailRows(); });
+  document.getElementById("addPointBtn").addEventListener("click", () => { detailState.points.push({title:"",description:""}); renderAllDetailRows(); });
+  document.getElementById("addExtraBtn").addEventListener("click", () => { detailState.extraSections.push({title:"",description:""}); renderAllDetailRows(); });
+
   /* ---------- Services: editor form ---------- */
   const editorFields = {
     id: document.getElementById("editServiceId"),
@@ -157,7 +225,9 @@
     editorFields.youtube.value = "";
     editorFields.tags.value = "";
     selectedDocs = new Set();
+    detailState = detailDefaults();
     renderDocPicker();
+    renderAllDetailRows();
   }
 
   document.getElementById("clearServiceBtn").addEventListener("click", clearEditor);
@@ -171,7 +241,10 @@
     editorFields.youtube.value = svc.youtube || "";
     editorFields.tags.value = (svc.tags || []).join(", ");
     selectedDocs = new Set(svc.documents || []);
+    const content = svc.detailContent || {};
+    detailState = { ...detailDefaults(), ...content, requiredDocuments: content.requiredDocuments || content.documentDetails || [] };
     renderDocPicker();
+    renderAllDetailRows();
     document.getElementById("serviceEditor").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
@@ -188,6 +261,7 @@
       description: editorFields.desc.value.trim(),
       youtube: editorFields.youtube.value.trim(),
       documents: Array.from(selectedDocs),
+      detailContent: readDetailContent(),
       tags: [...new Set(editorFields.tags.value.split(",").map(x => x.trim()).filter(Boolean))].slice(0, 20)
     };
 
