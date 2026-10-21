@@ -14,6 +14,12 @@
     canonical.href = "https://www.bgicybercafe.world/service.html?id=" + encodeURIComponent(service.id);
     document.head.append(canonical);
     const docs = service.documents || [];
+    const detail = service.detailContent || {};
+    const detailButtons = Array.isArray(detail.documents) ? detail.documents : [];
+    const requiredDocs = Array.isArray(detail.requiredDocuments) ? detail.requiredDocuments : (Array.isArray(detail.documentDetails) ? detail.documentDetails : []);
+    const guidelines = Array.isArray(detail.guidelines) ? detail.guidelines : [];
+    const points = Array.isArray(detail.points) ? detail.points : [];
+    const extraSections = Array.isArray(detail.extraSections) ? detail.extraSections : [];
     const phone = (settings.whatsappNumber || "").replace(/[^0-9]/g, "");
     const message = encodeURIComponent("Hello " + settings.siteName + ", I need assistance with " + service.title + ". Please confirm the current requirements and charges.");
     const pageLink = new URL("service.html?id=" + encodeURIComponent(service.id), location.href).href;
@@ -29,13 +35,19 @@
         if (videoId && /^[A-Za-z0-9_-]{11}$/.test(videoId)) guide = '<h2 id="guide">Video guide</h2><div class="video-wrap"><iframe title="Video guide" loading="lazy" src="https://www.youtube-nocookie.com/embed/' + videoId + '" allowfullscreen></iframe></div>';
       }
     } catch (_) {}
+    const buttonSection = detailButtons.length ? '<div class="detail-document-buttons" aria-label="Documents">' + detailButtons.map((name, index) => '<a class="detail-document-button" href="#required-documents">' + safe(name) + '</a>').join("") + '</div>' : "";
+    const requiredSection = requiredDocs.length ? '<section class="detail-content-section" id="required-documents"><h2>GST Registration Document Required</h2><div class="detail-item-grid">' + requiredDocs.map((item, index) => '<article class="detail-content-card"><span class="detail-number">' + (index + 1) + '</span><div><h3>' + safe(item.title || "") + '</h3><p>' + safe(item.description || "") + '</p></div></article>').join("") + '</div></section>' : "";
+    const guidelineSection = guidelines.length ? '<section class="detail-content-section"><h2>Important Guidelines</h2><ul class="detail-guidelines">' + guidelines.map(item => '<li>' + safe(item) + '</li>').join("") + '</ul></section>' : "";
+    const pointsSection = points.length ? '<section class="detail-content-section"><h2>GST Registration Important Points</h2><div class="detail-item-grid">' + points.map((item, index) => '<article class="detail-content-card"><span class="detail-number">' + (index + 1) + '</span><div><h3>' + safe(item.title || "") + '</h3><p>' + safe(item.description || "") + '</p></div></article>').join("") + '</div></section>' : "";
+    const notesSection = detail.notes ? '<section class="detail-content-section detail-notes"><h2>Important Notes</h2><p>' + safe(detail.notes).replace(/\\n/g, "<br>") + '</p></section>' : "";
+    const extraSection = extraSections.length ? '<section class="detail-content-section"><h2>' + safe(detail.extraTitle || "Additional Details") + '</h2><div class="detail-item-grid">' + extraSections.map((item, index) => '<article class="detail-content-card"><span class="detail-number">' + (index + 1) + '</span><div><h3>' + safe(item.title || "") + '</h3><p>' + safe(item.description || "") + '</p></div></article>').join("") + '</div></section>' : "";
+    const legacyDocs = !detailButtons.length && docs.length ? '<h2 id="documents">Documents listed for this service</h2><ul class="doc-list">' + docs.map(d => '<li>' + safe(d) + '</li>').join("") + '</ul>' : "";
     target.innerHTML = '<h1>' + safe(service.title) + '</h1>' +
-      '<p><strong>' + safe(service.tagline) + '</strong></p>' +
-      '<details class="about-service"><summary>About this service</summary><p>' + safe(service.description || "Contact us to discuss this service.") + '</p></details>' +
-      (service.tags?.length ? '<p class="service-tags">' + service.tags.map(tag => '<span>' + safe(tag) + '</span>').join("") + '</p>' : '') +
-      '<h2 id="documents">Documents listed for this service</h2>' +
-      (docs.length ? '<ul class="doc-list">' + docs.map(d => '<li>' + safe(d) + '</li>').join("") + '</ul>' : '<p>No document list is available yet. Ask us for the current requirements.</p>') +
-      '<p>Document requirements, eligibility, fees and deadlines can change. Confirm them on the relevant official website before submitting an application. BGI Cybercafe assistance charges, if applicable, are separate from official fees.</p>' +
+      (service.tagline ? '<p class="service-short-line">' + safe(service.tagline) + '</p>' : '') +
+      (service.description ? '<p class="service-intro">' + safe(service.description) + '</p>' : '') +
+      buttonSection + requiredSection + guidelineSection + pointsSection + notesSection + extraSection +
+      legacyDocs +
+      '<p class="service-disclaimer">Document requirements, eligibility, fees and deadlines can change. Confirm them on the relevant official website before submitting an application. BGI Cybercafe assistance charges, if applicable, are separate from official fees.</p>' +
       guide +
       '<div class="share-row"><strong>Share this page:</strong> ' +
       '<a class="btn btn-outline" href="https://api.whatsapp.com/send?text=' + encodeURIComponent(shareText + " " + pageLink) + '" target="_blank" rel="noopener noreferrer">' + whatsappIcon + ' WhatsApp</a>' +
