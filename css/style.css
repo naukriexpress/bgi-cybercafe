@@ -1797,3 +1797,45 @@ html[data-theme="dark"] .service-details .detail-notes p {
     border-radius: 15px;
   }
 }
+
+
+/* Dark mode contrast fix for service detail cards and notes.
+   Keep the purple page panels, but remove bright white cards in dark mode. */
+html[data-theme="dark"] .service-details .detail-content-card {
+  background: #241a34;
+  border-color: #59436d;
+  color: #f4efff;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .18);
+}
+html[data-theme="dark"] .service-details .detail-content-card h3 {
+  color: #f4efff;
+}
+html[data-theme="dark"] .service-details .detail-content-card p {
+  color: #c8bddb;
+}
+html[data-theme="dark"] .service-details .detail-number {
+  background: #493657;
+  color: #f4d778;
+}
+html[data-theme="dark"] .service-details .detail-notes {
+  background: #241a34;
+  border-color: #e6b43f;
+  color: #f4efff;
+}
+html[data-theme="dark"] .service-details .detail-notes > h2 {
+  color: #f4d778;
+  border-bottom-color: #59436d;
+}
+html[data-theme="dark"] .service-details .detail-notes p {
+  color: #c8bddb;
+}
+html[data-theme="dark"] .service-details .detail-content-section .email-checklist-label {
+  background: #2d203e;
+  color: #f4efff;
+  border-color: #59436d;
+}
+html[data-theme="dark"] .service-details .detail-content-section .email-checklist-label.is-checked {
+  background: #123522;
+  color: #bbf7d0;
+  border-color: #22c55e;
+}
