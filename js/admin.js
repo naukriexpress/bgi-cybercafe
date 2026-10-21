@@ -162,6 +162,7 @@
     wrap.querySelectorAll("[data-detail-remove]").forEach(button => button.addEventListener("click", () => {
       const kindName = button.dataset.detailRemove;
       const idx = Number(button.dataset.index);
+      syncDetailStateFromDOM();
       const key = kindName === "requiredDocuments" ? "requiredDocuments" : kindName;
       detailState[key].splice(idx, 1);
       renderAllDetailRows();
@@ -188,6 +189,15 @@
       return kind === "documents" || kind === "guidelines" ? title : { title, description };
     }).filter(item => typeof item === "string" ? item : (item.title || item.description));
   }
+  function syncDetailStateFromDOM() {
+    detailState.documents = collectDetailRows("detailDocRows", "documents");
+    detailState.requiredDocuments = collectDetailRows("detailRequiredRows", "requiredDocuments");
+    detailState.guidelines = collectDetailRows("detailGuidelineRows", "guidelines");
+    detailState.points = collectDetailRows("detailPointRows", "points");
+    detailState.extraSections = collectDetailRows("detailExtraRows", "extraSections");
+    detailState.notes = document.getElementById("detailNotes").value.trim();
+    detailState.extraTitle = document.getElementById("detailExtraTitle").value.trim();
+  }
   function readDetailContent() {
     return {
       documents: collectDetailRows("detailDocRows", "documents"),
@@ -199,11 +209,11 @@
       extraSections: collectDetailRows("detailExtraRows", "extraSections")
     };
   }
-  document.getElementById("addDetailDocBtn").addEventListener("click", () => { detailState.documents.push(""); renderAllDetailRows(); });
-  document.getElementById("addRequiredDocBtn").addEventListener("click", () => { detailState.requiredDocuments.push({title:"",description:""}); renderAllDetailRows(); });
-  document.getElementById("addGuidelineBtn").addEventListener("click", () => { detailState.guidelines.push(""); renderAllDetailRows(); });
-  document.getElementById("addPointBtn").addEventListener("click", () => { detailState.points.push({title:"",description:""}); renderAllDetailRows(); });
-  document.getElementById("addExtraBtn").addEventListener("click", () => { detailState.extraSections.push({title:"",description:""}); renderAllDetailRows(); });
+  document.getElementById("addDetailDocBtn").addEventListener("click", () => { syncDetailStateFromDOM(); detailState.documents.push(""); renderAllDetailRows(); });
+  document.getElementById("addRequiredDocBtn").addEventListener("click", () => { syncDetailStateFromDOM(); detailState.requiredDocuments.push({title:"",description:""}); renderAllDetailRows(); });
+  document.getElementById("addGuidelineBtn").addEventListener("click", () => { syncDetailStateFromDOM(); detailState.guidelines.push(""); renderAllDetailRows(); });
+  document.getElementById("addPointBtn").addEventListener("click", () => { syncDetailStateFromDOM(); detailState.points.push({title:"",description:""}); renderAllDetailRows(); });
+  document.getElementById("addExtraBtn").addEventListener("click", () => { syncDetailStateFromDOM(); detailState.extraSections.push({title:"",description:""}); renderAllDetailRows(); });
 
   /* ---------- Services: editor form ---------- */
   const editorFields = {
