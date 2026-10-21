@@ -397,3 +397,37 @@
   .admin-service-row .row-info { flex-basis: calc(100% - 52px); }
   .admin-service-row .row-actions { width: 100%; justify-content: flex-end; }
 }
+
+
+/* Editable service-detail content builder */
+.detail-editor-block {
+  margin: 24px 0;
+  padding: 20px;
+  border: 1px solid #e0d5f1;
+  border-radius: 14px;
+  background: #faf7ff;
+}
+.detail-editor-block h3 { margin: 0 0 8px; color: #38205c; }
+.detail-editor-block .panel-sub { margin-bottom: 16px; }
+.detail-edit-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: start;
+  margin: 0 0 10px;
+}
+.detail-edit-row:has(input[data-detail-field*="-title-"]) { grid-template-columns: minmax(0, 1fr) auto; }
+.detail-edit-row input, .detail-edit-row textarea {
+  width: 100%;
+  min-width: 0;
+  border: 1px solid #e0d5f1;
+  border-radius: 9px;
+  padding: 10px 11px;
+  font: inherit;
+  background: #fff;
+}
+.detail-edit-row textarea { min-height: 64px; resize: vertical; }
+.detail-remove { white-space: nowrap; }
+@media (max-width: 650px) {
+  .detail-edit-row, .detail-edit-row:has(textarea) { grid-template-columns: minmax(0, 1fr); }
+}
