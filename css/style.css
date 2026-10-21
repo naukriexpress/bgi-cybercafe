@@ -1654,3 +1654,146 @@ html[data-theme="dark"] .service-details .email-checklist-label.is-checked {
   background: #123522;
   border-color: #22c55e;
 }
+
+
+/* Rich service-detail title banner and consistent deep-purple section panels.
+   Scoped to service.html so the homepage stays unchanged. */
+.service-details > h1 {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  margin: 16px 0 20px;
+  padding: 25px 26px;
+  border: 1px solid rgba(255, 235, 170, .5);
+  border-radius: 20px;
+  color: #402b05;
+  background:
+    radial-gradient(circle at 88% 0%, rgba(255, 236, 155, .75), transparent 34%),
+    linear-gradient(115deg, #e5b83d 0%, #d4a126 58%, #bd8618 100%);
+  box-shadow: 0 14px 32px rgba(118, 77, 8, .18);
+  font-size: clamp(25px, 4vw, 36px);
+  line-height: 1.18;
+  letter-spacing: -.025em;
+}
+.service-details > h1::after {
+  position: absolute;
+  z-index: -1;
+  top: -70px;
+  right: -22px;
+  width: 210px;
+  height: 210px;
+  border: 1px solid rgba(255, 255, 255, .32);
+  border-radius: 50%;
+  box-shadow: 0 0 0 22px rgba(255,255,255,.09), 0 0 0 46px rgba(255,255,255,.055);
+  content: "";
+  pointer-events: none;
+}
+.service-details .service-short-line {
+  margin-top: 0;
+  color: var(--purple-700);
+}
+.service-details .detail-content-section {
+  border: 1px solid #56356f;
+  border-radius: 18px;
+  padding: 22px;
+  background:
+    radial-gradient(ellipse at 95% 0%, rgba(126, 85, 161, .24), transparent 42%),
+    linear-gradient(135deg, #32134f 0%, #251039 100%);
+  box-shadow: 0 12px 28px rgba(35, 13, 54, .16);
+}
+.service-details .detail-content-section > h2 {
+  color: #f4d778;
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgba(236, 213, 145, .25);
+  font-size: clamp(19px, 2.5vw, 24px);
+}
+.service-details .detail-guidelines {
+  color: #f6f0ff;
+}
+.service-details .detail-guidelines li::marker {
+  color: #e6bb46;
+}
+.service-details .detail-content-card {
+  border-color: rgba(233, 218, 249, .2);
+  background: rgba(255, 255, 255, .97);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+}
+.service-details .detail-content-card h3 {
+  color: #32134f;
+}
+.service-details .detail-content-card p {
+  color: #5b5470;
+}
+.service-details .detail-number {
+  background: #f7e8b5;
+  color: #4c3200;
+}
+.service-details .detail-notes {
+  border-left: 4px solid #e6bb46;
+  background: rgba(255, 255, 255, .97);
+  color: #241b36;
+}
+.service-details .detail-notes > h2 {
+  color: #32134f;
+  border-bottom-color: #e8d9af;
+}
+.service-details .detail-notes p {
+  color: #5b5470;
+}
+.service-details .detail-content-section .email-checklist-label {
+  background: #fff;
+  color: #241b36;
+}
+html[data-theme="dark"] .service-details > h1 {
+  color: #392503;
+  background:
+    radial-gradient(circle at 88% 0%, rgba(255, 236, 155, .72), transparent 34%),
+    linear-gradient(115deg, #e5b83d 0%, #d4a126 58%, #bd8618 100%);
+  border-color: rgba(255, 235, 170, .42);
+}
+html[data-theme="dark"] .service-details .detail-content-section {
+  border-color: #5b3c70;
+  background:
+    radial-gradient(ellipse at 95% 0%, rgba(126, 85, 161, .22), transparent 42%),
+    linear-gradient(135deg, #32134f 0%, #251039 100%);
+}
+html[data-theme="dark"] .service-details .detail-content-section > h2 {
+  color: #f4d778;
+}
+html[data-theme="dark"] .service-details .detail-guidelines {
+  color: #f6f0ff;
+}
+html[data-theme="dark"] .service-details .detail-content-card {
+  background: #fff;
+  border-color: #d9cce8;
+}
+html[data-theme="dark"] .service-details .detail-content-card h3 {
+  color: #32134f;
+}
+html[data-theme="dark"] .service-details .detail-content-card p {
+  color: #5b5470;
+}
+html[data-theme="dark"] .service-details .detail-number {
+  background: #f7e8b5;
+  color: #4c3200;
+}
+html[data-theme="dark"] .service-details .detail-notes {
+  background: #fff;
+  color: #241b36;
+}
+html[data-theme="dark"] .service-details .detail-notes > h2 {
+  color: #32134f;
+}
+html[data-theme="dark"] .service-details .detail-notes p {
+  color: #5b5470;
+}
+@media (max-width: 650px) {
+  .service-details > h1 {
+    padding: 21px 17px;
+    border-radius: 16px;
+  }
+  .service-details .detail-content-section {
+    padding: 16px;
+    border-radius: 15px;
+  }
+}
