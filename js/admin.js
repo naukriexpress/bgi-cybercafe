@@ -278,6 +278,9 @@
     selectedDocs = new Set(svc.documents || []);
     const content = svc.detailContent || {};
     detailState = { ...detailDefaults(), ...content, requiredDocuments: content.requiredDocuments || content.documentDetails || [] };
+    // Existing service checkbox selections and detail buttons now use the same linked list.
+    detailState.documents = [...new Set([...(Array.isArray(content.documents) ? content.documents : []), ...Array.from(selectedDocs)])];
+    selectedDocs = new Set(detailState.documents.filter(name => typeof name === "string" && name.trim()).map(name => name.trim()));
     renderDocPicker();
     renderAllDetailRows();
     document.getElementById("serviceEditor").scrollIntoView({ behavior: "smooth", block: "start" });
