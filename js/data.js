@@ -31,7 +31,7 @@ async function ccLoadDB(options = {}) {
   if (error) throw error;
   return {
     settings: mapSettings(settingsResult.data),
-    services: (servicesResult.data || []).map(row => ({ id: row.id, icon: row.icon, title: row.title, tagline: row.tagline, description: row.description, youtube: row.youtube || "", documents: row.documents || [], tags: row.tags || [] })),
+    services: (servicesResult.data || []).map(row => ({ id: row.id, icon: row.icon, title: row.title, tagline: row.tagline, description: row.description, youtube: row.youtube || "", documents: row.documents || [], tags: row.tags || [], detailContent: row.detail_content || { documents: [], guidelines: [], points: [], notes: "", extraSections: [] } })),
     news: newsResult.data || [],
     masterDocuments: (documentsResult.data || []).map(row => row.name)
   };
@@ -39,7 +39,7 @@ async function ccLoadDB(options = {}) {
 
 async function ccSaveDB(db) {
   const settings = { id: 1, site_name: db.settings.siteName, tagline: db.settings.tagline, ticker: db.settings.ticker, whatsapp_number: db.settings.whatsappNumber, address: db.settings.address, hours: db.settings.hours, jobs_url: db.settings.jobsUrl || DEFAULT_SETTINGS.jobsUrl, updated_at: new Date().toISOString() };
-  const services = db.services.map((s, index) => ({ id: s.id, icon: s.icon, title: s.title, tagline: s.tagline, description: s.description, youtube: s.youtube || "", documents: s.documents || [], tags: s.tags || [], sort_order: index }));
+  const services = db.services.map((s, index) => ({ id: s.id, icon: s.icon, title: s.title, tagline: s.tagline, description: s.description, youtube: s.youtube || "", documents: s.documents || [], tags: s.tags || [], detail_content: s.detailContent || { documents: [], guidelines: [], points: [], notes: "", extraSections: [] }, sort_order: index }));
   const docs = db.masterDocuments.map((name, index) => ({ name, sort_order: index }));
   const a = await ccSupabase.from("settings").upsert(settings); if (a.error) throw a.error;
   if (services.length) { const c = await ccSupabase.from("services").upsert(services); if (c.error) throw c.error; }
