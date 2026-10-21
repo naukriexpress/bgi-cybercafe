@@ -198,6 +198,14 @@
     detailState.notes = document.getElementById("detailNotes").value.trim();
     detailState.extraTitle = document.getElementById("detailExtraTitle").value.trim();
   }
+  // Keep the in-progress editor state synchronized on every keystroke so Add/Remove never clears typed text.
+  ["detailDocRows", "detailRequiredRows", "detailGuidelineRows", "detailPointRows", "detailExtraRows"].forEach(id => {
+    const container = document.getElementById(id);
+    if (container) container.addEventListener("input", () => syncDetailStateFromDOM());
+  });
+  document.getElementById("detailNotes").addEventListener("input", () => { detailState.notes = document.getElementById("detailNotes").value; });
+  document.getElementById("detailExtraTitle").addEventListener("input", () => { detailState.extraTitle = document.getElementById("detailExtraTitle").value; });
+
   function readDetailContent() {
     return {
       documents: collectDetailRows("detailDocRows", "documents"),
