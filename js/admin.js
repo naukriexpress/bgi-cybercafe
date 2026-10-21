@@ -136,10 +136,13 @@
     const val = input.value.trim();
     if (!val) return;
     if (!db.masterDocuments.includes(val)) db.masterDocuments.push(val);
+    syncDetailStateFromDOM();
     selectedDocs.add(val);
+    detailState.documents = Array.from(selectedDocs);
     input.value = "";
     persist();
     renderDocPicker();
+    renderAllDetailRows();
     renderMasterDocList();
   });
 
