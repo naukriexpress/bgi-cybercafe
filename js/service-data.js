@@ -1,4 +1,4 @@
-/* Static service details exported from Supabase on 2026-10-22. Public content only. */
+/* Automatically generated from Supabase public site data. */
 window.CC_SERVICE_DATA = {
   "settings": {
     "siteName": "BGI Cybercafe",

@@ -1,4 +1,4 @@
-/* Public first-paint data snapshot exported from Supabase on 2026-10-22. */
+/* Automatically generated from Supabase public site data. */
 window.CC_INITIAL_DATA = {
   "news": [
     {
