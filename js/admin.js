@@ -234,6 +234,7 @@
       points: collectDetailRows("detailPointRows", "points"),
       notes: document.getElementById("detailNotes").value.trim(),
       extraTitle: document.getElementById("detailExtraTitle").value.trim(),
+      quickLinks: [1,2,3,4].map(n => ({ name: document.getElementById("quickLinkName"+n).value.trim(), url: document.getElementById("quickLinkUrl"+n).value.trim(), color: document.getElementById("quickLinkColor"+n).value })).filter(link => link.name && link.url).slice(0,4),
       extraSections: collectDetailRows("detailExtraRows", "extraSections")
     };
   }
@@ -264,6 +265,7 @@
     editorFields.tags.value = "";
     selectedDocs = new Set();
     detailState = detailDefaults();
+    [1,2,3,4].forEach(n => { document.getElementById("quickLinkName"+n).value = ""; document.getElementById("quickLinkUrl"+n).value = ""; document.getElementById("quickLinkColor"+n).value = ["purple","blue","green","orange"][n-1]; });
     renderDocPicker();
     renderAllDetailRows();
   }
@@ -281,6 +283,12 @@
     selectedDocs = new Set(svc.documents || []);
     const content = svc.detailContent || {};
     detailState = { ...detailDefaults(), ...content, requiredDocuments: content.requiredDocuments || content.documentDetails || [] };
+    [1,2,3,4].forEach(n => {
+      const link = (Array.isArray(content.quickLinks) ? content.quickLinks : [])[n-1] || {};
+      document.getElementById("quickLinkName"+n).value = link.name || "";
+      document.getElementById("quickLinkUrl"+n).value = link.url || "";
+      document.getElementById("quickLinkColor"+n).value = ["purple","blue","green","orange","red","pink","teal","gold"].includes(link.color) ? link.color : ["purple","blue","green","orange"][n-1];
+    });
     // Existing service checkbox selections and detail buttons now use the same linked list.
     detailState.documents = [...new Set([...(Array.isArray(content.documents) ? content.documents : []), ...Array.from(selectedDocs)])];
     selectedDocs = new Set(detailState.documents.filter(name => typeof name === "string" && name.trim()).map(name => name.trim()));
@@ -292,6 +300,12 @@
   document.getElementById("saveServiceBtn").addEventListener("click", async () => {
     const title = editorFields.title.value.trim();
     if (!title) { flash("serviceSaveMsg", "Title is required", true); return; }
+    for (let n=1;n<=4;n++) {
+      const name = document.getElementById("quickLinkName"+n).value.trim();
+      const url = document.getElementById("quickLinkUrl"+n).value.trim();
+      if ((name && !url) || (!name && url)) { flash("serviceSaveMsg", "Quick button "+n+": enter both name and link", true); return; }
+      if (url && !/^https:\/\/[^\s]+$/i.test(url)) { flash("serviceSaveMsg", "Quick button "+n+": enter a full HTTPS link", true); return; }
+    }
 
     const id = editorFields.id.value || ccUid("svc");
     const record = {
