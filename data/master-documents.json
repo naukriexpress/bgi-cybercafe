@@ -106,6 +106,13 @@
     "Last two semester marksheets (semester pattern)",
     "Final year marksheet (yearly pattern)",
     "Provisional or Final Board Certificate",
-    "Leaving Certificate from the last attended Diploma Institute"
+    "Leaving Certificate from the last attended Diploma Institute",
+    "PAN",
+    "Business Constitution Proof",
+    "Principal Place of Business Proof",
+    "Promoter/Partner Details",
+    "Authorised Signatory Details",
+    "Aadhaar Authentication",
+    "Additional Supporting Documents"
   ]
 }

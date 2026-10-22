@@ -3215,6 +3215,165 @@ window.CC_SERVICE_DATA = {
           }
         ]
       }
+    },
+    {
+      "id": "svc-845f2ea3-6af3-42fc-94f9-968030883272",
+      "icon": "🧾",
+      "title": "New GST Registration Rule 14A – Simplified GST Registration for Small Taxpayers",
+      "tagline": "Get GST registration through an optional simplified route for eligible small businesses with monthly B2B output tax liability up to ₹2.5 lakh.",
+      "description": "Rule 14A of the CGST Rules, 2017, provides an optional registration facility for eligible taxpayers whose monthly output tax liability on supplies to registered persons does not exceed ₹2,50,000. The rule requires Aadhaar authentication, subject to applicable legal exceptions, and provides for electronic registration within three working days after successful authentication, as prescribed.",
+      "youtube": "",
+      "documents": [
+        "PAN",
+        "Business Constitution Proof",
+        "Principal Place of Business Proof",
+        "Promoter/Partner Details",
+        "Authorised Signatory Details",
+        "Aadhaar Authentication",
+        "Additional Supporting Documents"
+      ],
+      "tags": [
+        "GST Registration Rule 14A",
+        "New GST Registration Rule 14A 2025",
+        "GST Registration 2026",
+        "Simplified GST Registration",
+        "GST REG-01",
+        "GST REG-32",
+        "GST REG-33",
+        "GST Registration Online",
+        "GST Aadhaar Authentication",
+        "₹2.5 Lakh B2B Tax Liability",
+        "Small Business GST Registration",
+        "GST Registration Process India",
+        "CGST Rules 2017"
+      ],
+      "detailContent": {
+        "notes": "Do not confuse the ₹2.5 lakh monthly B2B output tax liability limit with the business's total turnover.\n\nCheck whether the business qualifies before selecting Rule 14A in Form GST REG-01.\n\nDo not assume that successful Aadhaar authentication removes every other applicable registration requirement.\n\nReview the latest GST Portal instructions and applicable CGST Rules before applying or withdrawing from the option.",
+        "points": [
+          {
+            "title": "Effective Date",
+            "description": "Rule 14A was introduced with effect from 1 November 2025 through Notification No. 18/2025–Central Tax dated 31 October 2025."
+          },
+          {
+            "title": "Monthly B2B Tax Liability Limit",
+            "description": "The output tax liability on supplies made to registered persons must not exceed ₹2.5 lakh per month. This is a tax-liability limit, not a turnover limit"
+          },
+          {
+            "title": "Optional Registration",
+            "description": "Eligible applicants can select the Rule 14A option while applying through the GST Portal. It is not a compulsory route for every new taxpayer"
+          },
+          {
+            "title": "Aadhaar Authentication",
+            "description": "The registration workflow requires Aadhaar authentication when the applicant selects Rule 14A, subject to applicable statutory exceptions."
+          },
+          {
+            "title": "Electronic Registration",
+            "description": "The prescribed process provides for registration within three working days following successful Aadhaar authentication. This is not a guarantee that every application will be approved regardless of eligibility or verification"
+          },
+          {
+            "title": "One Registration per PAN in a State/UT",
+            "description": "An applicant cannot obtain multiple registrations under Rule 14A using the same PAN in the same State or Union Territory."
+          },
+          {
+            "title": "Withdrawal Facility",
+            "description": "A taxpayer who wants to leave the Rule 14A option can apply using Form GST REG-32. The withdrawal process involves the prescribed conditions and an order in Form GST REG-33."
+          }
+        ],
+        "documents": [
+          "PAN",
+          "Business Constitution Proof",
+          "Principal Place of Business Proof",
+          "Promoter/Partner Details",
+          "Authorised Signatory Details",
+          "Aadhaar Authentication",
+          "Additional Supporting Documents"
+        ],
+        "extraTitle": "GST Rule 14A Application Process and Withdrawal Conditions",
+        "guidelines": [
+          "Rule 14A is an optional registration route; eligible applicants may choose the applicable regular registration route instead.",
+          "Monthly output tax liability on supplies to registered persons must not exceed ₹2,50,000",
+          "Aadhaar authentication is required for the Rule 14A option, subject to statutory exceptions.",
+          "Applicants must provide accurate details and complete the prescribed GST Portal verification and submission process."
+        ],
+        "quickLinks": [
+          {
+            "url": "https://www.gst.gov.in/",
+            "name": "Home",
+            "color": "purple"
+          },
+          {
+            "url": "https://services.gst.gov.in/services/login",
+            "name": "Login",
+            "color": "purple"
+          },
+          {
+            "url": "https://reg.gst.gov.in/registration/",
+            "name": "Registration",
+            "color": "purple"
+          },
+          {
+            "url": "https://services.gst.gov.in/services/searchsmregtp",
+            "name": "Temporary ID",
+            "color": "purple"
+          }
+        ],
+        "extraSections": [
+          {
+            "title": "How to Apply",
+            "description": "Visit the GST Portal, select Services → Registration → New Registration, complete the required application details, and select the Rule 14A option if eligible. Follow the Aadhaar authentication and verification instructions displayed on the portal"
+          },
+          {
+            "title": "Application Form",
+            "description": "Form GST REG-01 is the relevant registration application. The updated form includes the option to apply under Rule 14A."
+          },
+          {
+            "title": "Registration Certificate",
+            "description": "After registration is granted, the certificate is made available through the GST Portal in accordance with the applicable rules. The three-working-day timeline is subject to the prescribed conditions."
+          },
+          {
+            "title": "Withdrawal from Rule 14A",
+            "description": "Eligible taxpayers seeking to withdraw must submit Form GST REG-32. The prescribed conditions include filing applicable pending returns, meeting the relevant minimum return-filing requirement, updating registration details where necessary, and satisfying the restriction relating to proceedings under Section 29. The proper officer issues the withdrawal order in Form GST REG-33."
+          },
+          {
+            "title": "Official Information and Updates",
+            "description": "Refer to the CBIC GST Rules and the official GST registration guide for the applicable legal provisions, forms, and current portal procedure."
+          },
+          {
+            "title": "Tax Compliance After Registration",
+            "description": "Rule 14A is a registration facility, not an exemption from GST compliance. Taxpayers must continue meeting the return-filing, tax-payment, invoicing, and other requirements applicable to their registration and transactions. If B2B output tax liability exceeds the prescribed limit, the taxpayer should review the applicable Rule 14A restrictions and withdrawal procedure promptly."
+          }
+        ],
+        "requiredDocuments": [
+          {
+            "title": "PAN",
+            "description": "PAN of the business entity or proprietor, as applicable. PAN is mandatory for GST registration."
+          },
+          {
+            "title": "Business Constitution Proof",
+            "description": "Documents establishing the constitution of the business, such as a partnership deed or incorporation documents, where applicable."
+          },
+          {
+            "title": "Principal Place of Business Proof",
+            "description": "Ownership, rent, lease, consent, or other prescribed premises-related evidence, depending on the applicant's circumstances."
+          },
+          {
+            "title": "Promoter/Partner Details",
+            "description": "Identification and particulars of promoters, partners, or proprietors as applicable to the business."
+          },
+          {
+            "title": "Authorised Signatory Details",
+            "description": "Information and prescribed supporting documents for the person authorised to submit the application, where required."
+          },
+          {
+            "title": "Aadhaar Authentication",
+            "description": "Successful Aadhaar authentication for the relevant persons, subject to applicable statutory exceptions. The Rule 14A option requires the Aadhaar authentication selection in the GST Portal's registration workflow."
+          },
+          {
+            "title": "Additional Supporting Documents",
+            "description": "Any other evidence specifically required by the applicable registration form or official instructions for the particular applicant"
+          }
+        ]
+      }
     }
   ]
 };

@@ -749,6 +749,38 @@ window.CC_INITIAL_DATA = {
         "APAAR Official Portal",
         "ABC ID Status Check"
       ]
+    },
+    {
+      "id": "svc-845f2ea3-6af3-42fc-94f9-968030883272",
+      "icon": "🧾",
+      "title": "New GST Registration Rule 14A – Simplified GST Registration for Small Taxpayers",
+      "tagline": "Get GST registration through an optional simplified route for eligible small businesses with monthly B2B output tax liability up to ₹2.5 lakh.",
+      "description": "Rule 14A of the CGST Rules, 2017, provides an optional registration facility for eligible taxpayers whose monthly output tax liability on supplies to registered persons does not exceed ₹2,50,000. The rule requires Aadhaar authentication, subject to applicable legal exceptions, and provides for electronic registration within three working days after successful authentication, as prescribed.",
+      "youtube": "",
+      "documents": [
+        "PAN",
+        "Business Constitution Proof",
+        "Principal Place of Business Proof",
+        "Promoter/Partner Details",
+        "Authorised Signatory Details",
+        "Aadhaar Authentication",
+        "Additional Supporting Documents"
+      ],
+      "tags": [
+        "GST Registration Rule 14A",
+        "New GST Registration Rule 14A 2025",
+        "GST Registration 2026",
+        "Simplified GST Registration",
+        "GST REG-01",
+        "GST REG-32",
+        "GST REG-33",
+        "GST Registration Online",
+        "GST Aadhaar Authentication",
+        "₹2.5 Lakh B2B Tax Liability",
+        "Small Business GST Registration",
+        "GST Registration Process India",
+        "CGST Rules 2017"
+      ]
     }
   ],
   "settings": {
