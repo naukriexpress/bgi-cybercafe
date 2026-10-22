@@ -1839,3 +1839,21 @@ html[data-theme="dark"] .service-details .detail-content-section .email-checklis
   color: #bbf7d0;
   border-color: #22c55e;
 }
+
+/* Admin editor: configurable quick links beneath service title. */
+.quick-link-admin-row { padding:14px; border:1px solid var(--line); border-radius:12px; margin:8px 0; background:var(--purple-50); }
+.quick-link-admin-row > strong { display:block; margin-bottom:8px; }
+.quick-link-admin-row .field { margin-bottom:10px; }
+/* Service detail quick-link buttons: between title and tagline. */
+.service-quick-links { display:flex; flex-wrap:wrap; gap:9px; margin:14px 0 16px; }
+.service-quick-link { display:inline-flex; align-items:center; justify-content:center; min-height:42px; padding:10px 16px; border:1px solid transparent; border-radius:12px; color:#fff !important; font-size:13px; font-weight:800; text-decoration:none !important; box-shadow:0 4px 12px rgba(0,0,0,.12); transition:transform .15s ease,filter .15s ease; }
+.service-quick-link:hover { transform:translateY(-2px); filter:brightness(1.08); }
+.quick-link-purple { background:linear-gradient(135deg,#5b2c83,#3c1e59); border-color:#9e7ac2; }
+.quick-link-blue { background:linear-gradient(135deg,#1769aa,#124779); border-color:#65b5f2; }
+.quick-link-green { background:linear-gradient(135deg,#218653,#125b38); border-color:#70d7a1; }
+.quick-link-orange { background:linear-gradient(135deg,#e87922,#a8470d); border-color:#ffc078; }
+.quick-link-red { background:linear-gradient(135deg,#d94343,#922626); border-color:#ff9c9c; }
+.quick-link-pink { background:linear-gradient(135deg,#d946a6,#8e2869); border-color:#f6a8d8; }
+.quick-link-teal { background:linear-gradient(135deg,#0d9488,#115e59); border-color:#72e0d8; }
+.quick-link-gold { background:linear-gradient(135deg,#e8bd38,#c58d12); border-color:#ffe18a; color:#271a00 !important; }
+@media(max-width:560px) { .service-quick-links { gap:7px; } .service-quick-link { min-height:40px; padding:9px 12px; font-size:12.5px; } }
