@@ -3304,17 +3304,17 @@ window.CC_SERVICE_DATA = {
           {
             "url": "https://services.gst.gov.in/services/login",
             "name": "Login",
-            "color": "purple"
+            "color": "orange"
           },
           {
             "url": "https://reg.gst.gov.in/registration/",
             "name": "Registration",
-            "color": "purple"
+            "color": "pink"
           },
           {
             "url": "https://services.gst.gov.in/services/searchsmregtp",
             "name": "Temporary ID",
-            "color": "purple"
+            "color": "gold"
           }
         ],
         "extraSections": [
