@@ -1,6 +1,4 @@
 import fs from "node:fs/promises";
-import { execFileSync } from "node:child_process";
-
 const CONFIG_PATH = "js/config.js";
 const SUPABASE_CONFIG = await fs.readFile(CONFIG_PATH, "utf8");
 const URL = SUPABASE_CONFIG.match(/SUPABASE_URL:\s*"([^"]+)"/)?.[1];
