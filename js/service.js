@@ -16,6 +16,12 @@
     const docs = service.documents || [];
     const detail = service.detailContent || {};
     const detailButtons = Array.isArray(detail.documents) ? detail.documents : [];
+    const quickLinks = Array.isArray(detail.quickLinks) ? detail.quickLinks.slice(0, 4) : [];
+    const allowedQuickColors = ["purple", "blue", "green", "orange", "red", "pink", "teal", "gold"];
+    const quickLinkSection = quickLinks.filter(link => link && link.name && /^https:\/\//i.test(link.url || "")).map(link =>
+      '<a class="service-quick-link quick-link-' + (allowedQuickColors.includes(link.color) ? link.color : "purple") + '" href="' + safe(link.url) + '" target="_blank" rel="noopener noreferrer">' + safe(link.name) + '</a>'
+    ).join("");
+    const quickLinksSection = quickLinkSection ? '<nav class="service-quick-links" aria-label="Helpful links">' + quickLinkSection + '</nav>' : "";
     const requiredDocs = Array.isArray(detail.requiredDocuments) ? detail.requiredDocuments : (Array.isArray(detail.documentDetails) ? detail.documentDetails : []);
     const guidelines = Array.isArray(detail.guidelines) ? detail.guidelines : [];
     const points = Array.isArray(detail.points) ? detail.points : [];
@@ -44,6 +50,7 @@
     const extraSection = extraSections.length ? '<section class="detail-content-section"><h2>' + safe(detail.extraTitle || "Additional Details") + '</h2><div class="detail-item-grid">' + extraSections.map((item, index) => '<article class="detail-content-card"><span class="detail-number">' + (index + 1) + '</span><div><h3>' + safe(item.title || "") + '</h3><p>' + safe(item.description || "") + '</p></div></article>').join("") + '</div></section>' : "";
     const legacyDocs = !detailButtons.length && docs.length ? '<h2 id="documents">Documents listed for this service</h2><ul class="doc-list">' + docs.map(d => '<li>' + safe(d) + '</li>').join("") + '</ul>' : "";
     target.innerHTML = '<h1>' + safe(service.title) + '</h1>' +
+      quickLinksSection +
       (service.tagline ? '<p class="service-short-line">' + safe(service.tagline) + '</p>' : '') +
       (service.description ? '<p class="service-intro">' + safe(service.description) + '</p>' : '') +
       buttonSection + requiredSection + emailChecklist + guidelineSection + pointsSection + notesSection + extraSection +
