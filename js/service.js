@@ -4,7 +4,10 @@
   if (!id) { target.innerHTML = "<h1>Service not found</h1><p>Choose a service from the home page.</p>"; return; }
   const safe = value => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   try {
-    const { settings, services } = await ccLoadDB({ news: false, masterDocuments: false });
+    const snapshot = window.CC_INITIAL_DATA;
+    const { settings, services } = snapshot && snapshot.settings && Array.isArray(snapshot.services)
+      ? snapshot
+      : await ccLoadDB({ news: false, masterDocuments: false });
     const service = services.find(item => item.id === id);
     if (!service) { target.innerHTML = "<h1>Service not found</h1><p>This service may have been removed. Please see the current services on our home page.</p>"; return; }
     document.title = service.title + " | BGI Cybercafe Akola";
