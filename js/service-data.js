@@ -1,4 +1,4 @@
-/* Automatically generated from Supabase public site data. */
+/* Frozen GitHub snapshot: full details for existing baseline services. New services load from Supabase. */
 window.CC_SERVICE_DATA = {
   "settings": {
     "siteName": "BGI Cybercafe",
