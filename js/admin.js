@@ -4,6 +4,9 @@
 
 (async function () {
   let db = null;
+  const fixedServices = Array.isArray(window.CC_INITIAL_DATA?.services) ? window.CC_INITIAL_DATA.services : [];
+  const fixedServiceIds = new Set(fixedServices.map(service => service.id));
+  const fixedNews = Array.isArray(window.CC_INITIAL_DATA?.news) ? window.CC_INITIAL_DATA.news : [];
 
   /* ---------- Login gate ---------- */
   const loginScreen = document.getElementById("loginScreen");
@@ -42,7 +45,7 @@
       await ccLogout();
       throw new Error("Admin access required");
     }
-    db = await ccLoadDB();
+    db = await ccLoadDB({ news: false });
     loginScreen.style.display = "none";
     dashboard.style.display = "grid";
     renderAll();
@@ -76,35 +79,34 @@
 
   /* ---------- General settings ---------- */
   function renderSettingsForm() {
-    document.getElementById("setSiteName").value = db.settings.siteName;
-    document.getElementById("setTagline").value = db.settings.tagline;
-    document.getElementById("setWhatsapp").value = db.settings.whatsappNumber;
-    document.getElementById("setAddress").value = db.settings.address;
-    document.getElementById("setHours").value = db.settings.hours;
-    document.getElementById("setJobsUrl").value = db.settings.jobsUrl || "https://www.naukriexpress.space/";
+    const settings = window.CC_INITIAL_DATA?.settings || db.settings;
+    document.getElementById("setSiteName").value = settings.siteName || "";
+    document.getElementById("setTagline").value = settings.tagline || "";
+    document.getElementById("setWhatsapp").value = settings.whatsappNumber || "";
+    document.getElementById("setAddress").value = settings.address || "";
+    document.getElementById("setHours").value = settings.hours || "";
+    document.getElementById("setJobsUrl").value = settings.jobsUrl || "https://www.naukriexpress.space/";
+    // All general settings except the ticker are intentionally read-only GitHub content.
+    ["setSiteName", "setTagline", "setWhatsapp", "setAddress", "setHours", "setJobsUrl"].forEach(id => {
+      document.getElementById(id).readOnly = true;
+    });
+    document.getElementById("saveSettingsBtn").disabled = true;
   }
-
-  document.getElementById("saveSettingsBtn").addEventListener("click", async () => {
-    const jobsUrl = document.getElementById("setJobsUrl").value.trim();
-    if (!/^https:\/\/[^\s]+$/i.test(jobsUrl)) { flash("settingsSaveMsg", "Enter a full HTTPS jobs link", true); return; }
-    db.settings.siteName = document.getElementById("setSiteName").value.trim() || db.settings.siteName;
-    db.settings.tagline = document.getElementById("setTagline").value.trim();
-    db.settings.whatsappNumber = document.getElementById("setWhatsapp").value.replace(/[^0-9]/g, "");
-    db.settings.address = document.getElementById("setAddress").value.trim();
-    db.settings.hours = document.getElementById("setHours").value.trim();
-    db.settings.jobsUrl = jobsUrl;
-    if (await persist()) flash("settingsSaveMsg", "Saved ✓");
-  });
 
   /* ---------- Ticker ---------- */
   function renderTickerForm() {
     document.getElementById("setTicker").value = db.settings.ticker;
   }
 
-  document.getElementById("saveTickerBtn").addEventListener("click", () => {
-    db.settings.ticker = document.getElementById("setTicker").value.trim();
-    persist();
-    flash("tickerSaveMsg", "Saved ✓");
+  document.getElementById("saveTickerBtn").addEventListener("click", async () => {
+    const ticker = document.getElementById("setTicker").value.trim();
+    try {
+      await ccSaveTicker(ticker);
+      db.settings.ticker = ticker;
+      flash("tickerSaveMsg", "Saved to Supabase ✓");
+    } catch (error) {
+      flash("tickerSaveMsg", "Save failed: " + error.message, true);
+    }
   });
 
   /* ---------- Services: document picker inside editor ---------- */
@@ -273,6 +275,10 @@
   document.getElementById("clearServiceBtn").addEventListener("click", clearEditor);
 
   function loadServiceIntoEditor(svc) {
+    if (fixedServiceIds.has(svc.id)) {
+      flash("serviceSaveMsg", "This existing service is fixed in GitHub. Use Clear form / add new for a Supabase service.", true);
+      return;
+    }
     editorFields.id.value = svc.id;
     editorFields.icon.value = svc.icon || "";
     editorFields.title.value = svc.title || "";
@@ -307,7 +313,12 @@
       if (url && !/^https:\/\/[^\s]+$/i.test(url)) { flash("serviceSaveMsg", "Quick button "+n+": enter a full HTTPS link", true); return; }
     }
 
-    const id = editorFields.id.value || ccUid("svc");
+    const requestedId = editorFields.id.value;
+    if (requestedId && fixedServiceIds.has(requestedId)) {
+      flash("serviceSaveMsg", "Existing GitHub-fixed services cannot be edited here. Clear the form to add a new Supabase service.", true);
+      return;
+    }
+    const id = requestedId || ccUid("svc");
     const record = {
       id,
       icon: editorFields.icon.value.trim() || "📄",
@@ -334,23 +345,42 @@
 
   function renderServiceList() {
     const wrap = document.getElementById("adminServiceList");
-    if (db.services.length === 0) {
+    const managedServices = db.services.filter(svc => !fixedServiceIds.has(svc.id));
+    if (!fixedServices.length && !managedServices.length) {
       wrap.innerHTML = `<p class="panel-sub">No services yet — add your first one above.</p>`;
       return;
     }
-    wrap.innerHTML = db.services.map(svc => `
+
+    const fixedMarkup = fixedServices.map(svc => `
       <div class="admin-service-row">
         <div class="row-icon">${escapeHtml(svc.icon || "📄")}</div>
         <div class="row-info">
           <div class="row-title">${escapeHtml(svc.title)}</div>
-          <div class="row-meta">${(svc.documents || []).length} document(s) ${svc.youtube ? "· has video" : ""}</div>
+          <div class="row-meta">GitHub snapshot · fixed content</div>
+        </div>
+        <div class="row-actions"><span class="row-meta">Read only</span></div>
+      </div>
+    `).join("");
+
+    const managedMarkup = managedServices.map(svc => `
+      <div class="admin-service-row">
+        <div class="row-icon">${escapeHtml(svc.icon || "📄")}</div>
+        <div class="row-info">
+          <div class="row-title">${escapeHtml(svc.title)}</div>
+          <div class="row-meta">${(svc.documents || []).length} document(s) ${svc.youtube ? "· has video" : ""} · Supabase</div>
         </div>
         <div class="row-actions">
-          <button type="button" data-edit="${svc.id}">Edit</button>
-          <button type="button" class="danger" data-delete="${svc.id}">Delete</button>
+          <button type="button" data-edit="${escapeAttr(svc.id)}">Edit</button>
+          <button type="button" class="danger" data-delete="${escapeAttr(svc.id)}">Delete</button>
         </div>
       </div>
     `).join("");
+
+    wrap.innerHTML = `
+      <p class="panel-sub">GitHub-fixed services: ${fixedServices.length} · Supabase-managed services: ${managedServices.length}</p>
+      ${fixedMarkup}
+      ${managedMarkup}
+    `;
 
     wrap.querySelectorAll("[data-edit]").forEach(btn => {
       btn.addEventListener("click", () => {
@@ -361,7 +391,7 @@
     wrap.querySelectorAll("[data-delete]").forEach(btn => {
       btn.addEventListener("click", async () => {
         const svc = db.services.find(s => s.id === btn.dataset.delete);
-        if (svc && confirm(`Delete "${svc.title}"? This cannot be undone.`)) {
+        if (svc && !fixedServiceIds.has(svc.id) && confirm(`Delete "${svc.title}"? This cannot be undone.`)) {
           try { await ccDeleteService(svc.id); } catch (error) { alert("Delete failed: " + error.message); return; }
           db.services = db.services.filter(s => s.id !== btn.dataset.delete);
           renderServiceList();
@@ -393,22 +423,15 @@
   });
   function renderNewsList() {
     const wrap = document.getElementById("adminNewsList");
-    wrap.innerHTML = db.news.length ? db.news.map(n => `
-      <div class="admin-service-row"><div class="row-info"><div class="row-title">${escapeHtml(n.title)}</div><div class="row-meta">${new Date(n.published_at).toLocaleDateString("en-IN")}</div></div>
-      <div class="row-actions"><button type="button" data-news-edit="${escapeAttr(n.id)}">Edit</button><button type="button" class="danger" data-news-delete="${escapeAttr(n.id)}">Delete</button></div></div>`).join("") : "<p>No news published yet.</p>";
-    wrap.querySelectorAll("[data-news-edit]").forEach(btn => btn.addEventListener("click", () => {
-      const n = db.news.find(x => x.id === btn.dataset.newsEdit);
-      if (!n) return;
-      for (const [field, value] of Object.entries({editNewsId:n.id,newsTitle:n.title,newsSummary:n.summary,newsBody:n.body,newsLink:n.source_url}))
-        document.getElementById(field).value = value || "";
-      document.getElementById("newsEditor").scrollIntoView({behavior:"smooth"});
-    }));
-    wrap.querySelectorAll("[data-news-delete]").forEach(btn => btn.addEventListener("click", async () => {
-      const n = db.news.find(x => x.id === btn.dataset.newsDelete);
-      if (!n || !confirm('Delete "' + n.title + '"?')) return;
-      try { await ccDeleteNews(n.id); db.news = db.news.filter(x => x.id !== n.id); renderNewsList(); }
-      catch (error) { alert("Delete failed: " + error.message); }
-    }));
+    wrap.innerHTML = fixedNews.length ? fixedNews.map(item => `
+      <div class="admin-service-row">
+        <div class="row-info">
+          <div class="row-title">${escapeHtml(item.title)}</div>
+          <div class="row-meta">${item.published_at ? new Date(item.published_at).toLocaleDateString("en-IN") : "GitHub snapshot"} · GitHub fixed</div>
+        </div>
+        <div class="row-actions"><span class="row-meta">Read only</span></div>
+      </div>
+    `).join("") : "<p>No news items are saved in the GitHub snapshot.</p>";
   }
 
   /* ---------- Master documents panel ---------- */
