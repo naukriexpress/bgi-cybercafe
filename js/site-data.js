@@ -781,6 +781,36 @@ window.CC_INITIAL_DATA = {
         "GST Registration Process India",
         "CGST Rules 2017"
       ]
+    },
+    {
+      "id": "svc-8a7e99cb-7ba4-4bb2-a893-3a6f961b6b0f",
+      "icon": "✈️",
+      "title": "New Indian Passport Application (Fresh Passport)",
+      "tagline": "Apply online for a new Indian passport through the official Passport Seva portal.",
+      "description": "Indian citizens applying for a passport for the first time can submit a Fresh Passport application through the Passport Seva portal. The process includes online form submission, fee payment, appointment booking, document verification and police verification, as applicable.",
+      "youtube": "",
+      "documents": [
+        "Proof of Present Address",
+        "Proof of Date of Birth",
+        "Proof of Non-ECR Eligibility (Conditional)",
+        "Parent or Guardian Documents (For Minors, Where Applicable)",
+        "Original Documents and Self-Attested Photocopies"
+      ],
+      "tags": [
+        "New Indian Passport Apply Online",
+        "Fresh Passport Application",
+        "Indian Passport Registration",
+        "Passport Seva",
+        "Passport Online Form",
+        "New Passport Documents",
+        "Passport Application Status",
+        "Passport Fees India",
+        "Tatkaal Passport",
+        "ECR Non-ECR Passport",
+        "Passport Seva Kendra",
+        "PSK Appointment",
+        "Government of India Passport"
+      ]
     }
   ],
   "settings": {

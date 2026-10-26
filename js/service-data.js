@@ -3374,6 +3374,157 @@ window.CC_SERVICE_DATA = {
           }
         ]
       }
+    },
+    {
+      "id": "svc-8a7e99cb-7ba4-4bb2-a893-3a6f961b6b0f",
+      "icon": "✈️",
+      "title": "New Indian Passport Application (Fresh Passport)",
+      "tagline": "Apply online for a new Indian passport through the official Passport Seva portal.",
+      "description": "Indian citizens applying for a passport for the first time can submit a Fresh Passport application through the Passport Seva portal. The process includes online form submission, fee payment, appointment booking, document verification and police verification, as applicable.",
+      "youtube": "",
+      "documents": [
+        "Proof of Present Address",
+        "Proof of Date of Birth",
+        "Proof of Non-ECR Eligibility (Conditional)",
+        "Parent or Guardian Documents (For Minors, Where Applicable)",
+        "Original Documents and Self-Attested Photocopies"
+      ],
+      "tags": [
+        "New Indian Passport Apply Online",
+        "Fresh Passport Application",
+        "Indian Passport Registration",
+        "Passport Seva",
+        "Passport Online Form",
+        "New Passport Documents",
+        "Passport Application Status",
+        "Passport Fees India",
+        "Tatkaal Passport",
+        "ECR Non-ECR Passport",
+        "Passport Seva Kendra",
+        "PSK Appointment",
+        "Government of India Passport"
+      ],
+      "detailContent": {
+        "notes": "Do not select Re-issue when your application requires the Fresh Passport service, or vice versa.\n\n\n\nThe document checklist may differ for adults, minors and applicants with special circumstances.\n\n\n\nCheck the current application fee and appointment instructions before making payment.\n\n\n\nUse official government websites for applications, payments and status updates. Avoid unverified agents or unofficial payment links.",
+        "points": [
+          {
+            "title": "Fresh Passport vs Re-issue",
+            "description": "Choose Fresh Passport when applying for a passport for the first time in the relevant category. Existing passport holders generally need the applicable re-issue service instead."
+          },
+          {
+            "title": "Online Application",
+            "description": "Applicants must register or sign in to the official Passport Seva portal to complete the online application process."
+          },
+          {
+            "title": "Application Fees",
+            "description": "Passport fees were revised with effect from 1 July 2026, according to the official portal. Use the current fee calculator to confirm the amount for your application type, booklet size and applicant category."
+          },
+          {
+            "title": "Normal and Tatkaal Services",
+            "description": "Applicants can choose between Normal and Tatkaal services, subject to the applicable eligibility conditions and document requirements. Tatkaal applications carry an additional fee where applicable."
+          },
+          {
+            "title": "ECR and Non-ECR Status",
+            "description": "Emigration Check Required (ECR) and Non-ECR classifications depend on the applicable eligibility criteria. Educational qualifications and other qualifying circumstances may affect the classification."
+          },
+          {
+            "title": "Appointment and Verification",
+            "description": "The applicant must attend the designated appointment with the required original documents and photocopies. Police verification is conducted as applicable to the case."
+          },
+          {
+            "title": "Application Tracking",
+            "description": "Applicants can use the official Passport Seva status service to check their application's progress after submission"
+          }
+        ],
+        "documents": [
+          "Proof of Present Address",
+          "Proof of Date of Birth",
+          "Proof of Non-ECR Eligibility (Conditional)",
+          "Parent or Guardian Documents (For Minors, Where Applicable)",
+          "Original Documents and Self-Attested Photocopies"
+        ],
+        "extraTitle": "Passport Application Process, Fees and Verification",
+        "guidelines": [
+          "Apply through the official Passport Seva portal and select Fresh Passport if you are applying for the first time in the relevant application category.",
+          "Enter your personal details accurately and ensure that your supporting documents match the information in your application.",
+          "Complete the applicable online fee payment and appointment booking, then visit the designated PSK or Post Office Passport Seva Kendra (POPSK) with the required documents",
+          "Follow the instructions for document verification and police verification, where applicable"
+        ],
+        "quickLinks": [
+          {
+            "url": "https://www.passportindia.gov.in/psp",
+            "name": "HOME",
+            "color": "purple"
+          },
+          {
+            "url": "https://services1.passportindia.gov.in/forms/PreLogin?_gl=1*166ogh8*_ga*MTE5ODY0NTI1LjE3NzkyMTAwNzM.*_ga_B4255W3J9F*czE3OTMwMzMyMjYkbzUkZzEkdDE3OTMwMzMyNDMkajQzJGwwJGgw*_ga_JTJJBP5DNH*czE3OTMwMzMyMjYkbzUkZzEkdDE3OTMwMzMyNDMkajQzJGwwJGgw",
+            "name": "Log In",
+            "color": "red"
+          },
+          {
+            "url": "https://services1.passportindia.gov.in/forms/registration?_gl=1*4z0rw4*_ga*MTE5ODY0NTI1LjE3NzkyMTAwNzM.*_ga_B4255W3J9F*czE3OTMwMzMyMjYkbzUkZzEkdDE3OTMwMzMyNDMkajQzJGwwJGgw*_ga_JTJJBP5DNH*czE3OTMwMzMyMjYkbzUkZzEkdDE3OTMwMzMyNDMkajQzJGwwJGgw",
+            "name": "Register",
+            "color": "red"
+          },
+          {
+            "url": "https://www.passportindia.gov.in/psp/FeeCalculator",
+            "name": "Fee Calculator",
+            "color": "gold"
+          }
+        ],
+        "extraSections": [
+          {
+            "title": "Register or Sign In",
+            "description": "Open the official Passport Seva portal and access the online passport application service."
+          },
+          {
+            "title": "Complete the Application Form",
+            "description": "Select Fresh Passport, choose the appropriate application type and applicant category, and enter the required details accurately."
+          },
+          {
+            "title": "Pay the Applicable Fee",
+            "description": "Use the official Fee Calculator to check the current fee. Online payment is mandatory for booking appointments at PSKs and POPSKs"
+          },
+          {
+            "title": "Book an Appointment",
+            "description": "Select an available appointment at the appropriate PSK or POPSK. Check the appointment confirmation for the date, time and location."
+          },
+          {
+            "title": "Attend Document Verification",
+            "description": "Visit the designated centre with the required original documents and one set of self-attested photocopies. The applicant's presence is mandatory."
+          },
+          {
+            "title": "Police Verification and Delivery",
+            "description": "Complete police verification when required and monitor the application status through the official portal. Processing time varies by application and verification requirements. The official Citizen's Charter specifies timelines subject to its stated conditions and exclusions."
+          }
+        ],
+        "requiredDocuments": [
+          {
+            "title": "Proof of Present Address",
+            "description": "An officially accepted document establishing the applicant's current residential address. The accepted document types depend on the official checklist."
+          },
+          {
+            "title": "Proof of Date of Birth",
+            "description": "An accepted document establishing the applicant's date of birth, according to the current Passport Seva requirements."
+          },
+          {
+            "title": "Proof of Non-ECR Eligibility (Conditional)",
+            "description": "An applicable educational certificate or another accepted supporting document, if the applicant qualifies for Non-ECR status and the selected category requires proof"
+          },
+          {
+            "title": "Parent or Guardian Documents (For Minors, Where Applicable)",
+            "description": "Documents and declarations required for a minor's application, depending on parental consent and the applicant's circumstances."
+          },
+          {
+            "title": "Original Documents and Self-Attested Photocopies",
+            "description": "Applicants must bring the applicable original documents along with one set of self-attested photocopies to the Passport Seva Kendra (PSK) for processing."
+          },
+          {
+            "title": "Additional Supporting Documents (Conditional)",
+            "description": "Relevant marriage, divorce, name-change, government-service or other supporting documents, if required for the applicant's specific circumstances."
+          }
+        ]
+      }
     }
   ]
 };

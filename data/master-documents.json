@@ -113,6 +113,11 @@
     "Promoter/Partner Details",
     "Authorised Signatory Details",
     "Aadhaar Authentication",
-    "Additional Supporting Documents"
+    "Additional Supporting Documents",
+    "Proof of Present Address",
+    "Proof of Date of Birth",
+    "Proof of Non-ECR Eligibility (Conditional)",
+    "Parent or Guardian Documents (For Minors, Where Applicable)",
+    "Original Documents and Self-Attested Photocopies"
   ]
 }
