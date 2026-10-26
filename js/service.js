@@ -93,6 +93,7 @@
 }
 
   const staticSnapshot = window.CC_SERVICE_DATA;
+  const frozenServiceIds = new Set((staticSnapshot?.services || []).map(service => service.id));
   const renderedFromSnapshot = staticSnapshot ? renderSnapshot(staticSnapshot) : false;
   if (!renderedFromSnapshot) {
     // Leave the HTML skeleton visible while a newly added service is looked up live.
@@ -101,18 +102,27 @@
 
   function refreshFromSupabase() {
     if (typeof ccLoadDB !== "function") return;
+    // Existing service IDs are frozen in GitHub. Only IDs added after this snapshot
+    // are read from Supabase, so edits to legacy DB rows cannot replace the saved content.
     ccLoadDB({ settings: true, services: true, masterDocuments: false, news: false })
       .then(liveSnapshot => {
-        if (!liveSnapshot || !liveSnapshot.settings || !Array.isArray(liveSnapshot.services)) return;
-        const normalized = {
-          settings: liveSnapshot.settings || staticSnapshot?.settings || {},
-          services: liveSnapshot.services
-        };
-        const renderedLive = renderSnapshot(normalized);
-        if (!renderedLive && !renderedFromSnapshot) {
-          target.innerHTML = "<h1>Service not found</h1><p>This service may have been removed or has not finished saving. Please return to the services list and try again.</p>";
-          target.setAttribute("aria-busy", "false");
+        if (!liveSnapshot || !Array.isArray(liveSnapshot.services)) return;
+        if (frozenServiceIds.has(id)) return;
+
+        const liveService = liveSnapshot.services.find(service => service.id === id);
+        if (!liveService) {
+          if (!renderedFromSnapshot) {
+            target.innerHTML = "<h1>Service not found</h1><p>This service may have been removed or has not finished saving. Please return to the services list and try again.</p>";
+            target.setAttribute("aria-busy", "false");
+          }
+          return;
         }
+
+        // Dynamic services still use the same fixed detail-page layout; only the text/data is live.
+        renderSnapshot({
+          settings: staticSnapshot?.settings || liveSnapshot.settings || {},
+          services: [liveService]
+        });
       })
       .catch(error => {
         console.warn("Live service refresh unavailable; the saved snapshot remains visible.", error);
