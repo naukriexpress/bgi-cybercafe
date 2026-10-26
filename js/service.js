@@ -4,8 +4,28 @@
   if (!id) { target.innerHTML = "<h1>Service not found</h1><p>Choose a service from the home page.</p>"; return; }
   const safe = value => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   try {
-    const snapshot = window.CC_SERVICE_DATA;
-    if (!snapshot || !snapshot.settings || !Array.isArray(snapshot.services)) throw new Error('Static service data is unavailable.');
+    // Supabase is the source of truth for services saved in Admin. Keep the generated
+    // static snapshot as a fallback if the live request is temporarily unavailable.
+    let snapshot = window.CC_SERVICE_DATA;
+    if (typeof ccLoadDB === "function") {
+      try {
+        const liveSnapshot = await ccLoadDB({
+          settings: true,
+          services: true,
+          masterDocuments: false,
+          news: false
+        });
+        if (liveSnapshot && Array.isArray(liveSnapshot.services)) {
+          snapshot = {
+            settings: liveSnapshot.settings || snapshot?.settings || {},
+            services: liveSnapshot.services
+          };
+        }
+      } catch (liveError) {
+        console.warn("Could not load live service data; using the static snapshot fallback.", liveError);
+      }
+    }
+    if (!snapshot || !snapshot.settings || !Array.isArray(snapshot.services)) throw new Error('Live and static service data are unavailable.');
     const { settings, services } = snapshot;
     const service = services.find(item => item.id === id);
     if (!service) { target.innerHTML = "<h1>Service not found</h1><p>This service may have been removed. Please see the current services on our home page.</p>"; return; }
