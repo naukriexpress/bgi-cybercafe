@@ -1,9 +1,13 @@
-name: Sync Supabase data to static site
+name: Manual snapshot export (overwrites GitHub-fixed site data)
 
 on:
-  schedule:
-    - cron: "*/15 * * * *"
   workflow_dispatch:
+    inputs:
+      confirm_snapshot_export:
+        description: "Confirm only if you intentionally want to replace the frozen GitHub snapshots with current Supabase data."
+        type: boolean
+        required: true
+        default: false
 
 permissions:
   contents: write
@@ -14,6 +18,8 @@ concurrency:
 
 jobs:
   sync:
+    # The frozen snapshots must not be overwritten by future database-only services unless explicitly confirmed.
+    if: ${{ inputs.confirm_snapshot_export }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out main
