@@ -333,10 +333,12 @@
 
 <!-- News popup -->
 <div class="cc-modal-overlay" id="newsModalOverlay">
-  <div class="cc-modal news-modal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle">
+  <div class="cc-modal news-modal" role="dialog" aria-modal="true" aria-labelledby="newsModalTitle" aria-describedby="newsModalIntro">
     <button class="cc-modal-close" id="newsModalClose" aria-label="Close news">✕</button>
-    <h3 id="newsModalTitle">News &amp; updates</h3>
-    <div class="news-modal-list" id="newsModalList"><p>Loading news…</p></div>
+    <p class="news-modal-kicker"><span class="news-modal-kicker-dot" aria-hidden="true"></span> STAY INFORMED</p>
+    <h3 id="newsModalTitle">News &amp; Updates</h3>
+    <p class="news-modal-intro" id="newsModalIntro">Important notices in simple words. Open a card to read the full details.</p>
+    <div class="news-modal-list" id="newsModalList"><p>Loading updates…</p></div>
   </div>
 </div>
 
