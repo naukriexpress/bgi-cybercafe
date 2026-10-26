@@ -221,13 +221,14 @@
   }
 
   // GitHub is the source of truth for existing public content. Render it immediately,
-  // then fetch only the live ticker and service records that are not in the frozen snapshot.
-  if (window.CC_INITIAL_DATA && typeof ccLoadDB === "function") {
+  // without waiting for the Supabase SDK; refresh the live ticker/new services once data.js is ready.
+  function refreshLiveTickerAndServices() {
+    if (typeof ccLoadDB !== "function") return;
     ccLoadDB({ settings: true, services: true, masterDocuments: false, news: false })
       .then(fresh => {
         const dynamicServices = (fresh.services || []).filter(service => !frozenServiceIds.has(service.id));
         services = [...frozenServices, ...dynamicServices];
-        settings = { ...settings, ticker: fresh.settings?.ticker || settings.ticker };
+        settings = { ...settings, ticker: typeof fresh.settings?.ticker === "string" ? fresh.settings.ticker : settings.ticker };
         db = { settings, services, news };
 
         // Do not overwrite the GitHub-fixed title, contact information, address or news.
@@ -241,5 +242,10 @@
         });
       })
       .catch(error => console.warn("Live ticker/services refresh unavailable; showing the saved GitHub snapshot.", error));
+  }
+
+  if (window.CC_INITIAL_DATA) {
+    if (typeof ccLoadDB === "function") refreshLiveTickerAndServices();
+    else window.addEventListener("cc:data-ready", refreshLiveTickerAndServices, { once: true });
   }
 })();
