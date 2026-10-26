@@ -38,12 +38,41 @@ async function ccLoadDB(options = {}) {
 }
 
 async function ccSaveDB(db) {
-  const settings = { id: 1, site_name: db.settings.siteName, tagline: db.settings.tagline, ticker: db.settings.ticker, whatsapp_number: db.settings.whatsappNumber, address: db.settings.address, hours: db.settings.hours, jobs_url: db.settings.jobsUrl || DEFAULT_SETTINGS.jobsUrl, updated_at: new Date().toISOString() };
-  const services = db.services.map((s, index) => ({ id: s.id, icon: s.icon, title: s.title, tagline: s.tagline, description: s.description, youtube: s.youtube || "", documents: s.documents || [], tags: s.tags || [], detail_content: s.detailContent || { documents: [], guidelines: [], points: [], notes: "", extraSections: [] }, sort_order: index }));
+  // Existing records whose IDs are in the checked-in GitHub snapshot are frozen.
+  // Only services created after this baseline are written back to Supabase.
+  const frozenIds = new Set((window.CC_INITIAL_DATA?.services || []).map(service => service.id));
+  const services = db.services
+    .filter(service => !frozenIds.has(service.id))
+    .map((s, index) => ({
+      id: s.id,
+      icon: s.icon,
+      title: s.title,
+      tagline: s.tagline,
+      description: s.description,
+      youtube: s.youtube || "",
+      documents: s.documents || [],
+      tags: s.tags || [],
+      detail_content: s.detailContent || { documents: [], guidelines: [], points: [], notes: "", extraSections: [] },
+      sort_order: index
+    }));
   const docs = db.masterDocuments.map((name, index) => ({ name, sort_order: index }));
-  const a = await ccSupabase.from("settings").upsert(settings); if (a.error) throw a.error;
-  if (services.length) { const c = await ccSupabase.from("services").upsert(services); if (c.error) throw c.error; }
-  if (docs.length) { const e = await ccSupabase.from("master_documents").upsert(docs, { onConflict: "name" }); if (e.error) throw e.error; }
+  if (services.length) {
+    const c = await ccSupabase.from("services").upsert(services);
+    if (c.error) throw c.error;
+  }
+  if (docs.length) {
+    const e = await ccSupabase.from("master_documents").upsert(docs, { onConflict: "name" });
+    if (e.error) throw e.error;
+  }
+}
+
+async function ccSaveTicker(ticker) {
+  // Ticker is the only shared site setting that remains live-editable in the database.
+  const { error } = await ccSupabase
+    .from("settings")
+    .update({ ticker: String(ticker ?? ""), updated_at: new Date().toISOString() })
+    .eq("id", 1);
+  if (error) throw error;
 }
 async function ccDeleteService(id) {
   const { error } = await ccSupabase.from("services").delete().eq("id", id);
