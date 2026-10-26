@@ -45,8 +45,8 @@
     <nav class="sidebar-nav">
       <button type="button" class="nav-item active" data-panel="panel-settings">⚙️ General settings</button>
       <button type="button" class="nav-item" data-panel="panel-ticker">📢 Top ticker</button>
-      <button type="button" class="nav-item" data-panel="panel-services">🗂️ Services</button>
-      <button type="button" class="nav-item" data-panel="panel-news">📰 News</button>
+      <button type="button" class="nav-item" data-panel="panel-services">🗂️ Services (GitHub + Supabase)</button>
+      <button type="button" class="nav-item" data-panel="panel-news">📰 News (GitHub fixed)</button>
       <button type="button" class="nav-item" data-panel="panel-documents">📄 Master documents</button>
       <button type="button" class="nav-item" data-panel="panel-security">🔒 Change password</button>
     </nav>
@@ -61,15 +61,15 @@
     <!-- ---------- General settings ---------- -->
     <section class="panel" id="panel-settings">
       <h2>General settings</h2>
-      <p class="panel-sub">Basic details shown across the site.</p>
+      <p class="panel-sub">These details are fixed in the GitHub snapshot for instant loading. Only the top ticker is edited through Supabase.</p>
       <div class="card-form">
-        <label class="field"><span>Site name</span><input id="setSiteName" type="text" /></label>
-        <label class="field"><span>Tagline</span><input id="setTagline" type="text" /></label>
-        <label class="field"><span>WhatsApp number (with country code, digits only)</span><input id="setWhatsapp" type="text" placeholder="91XXXXXXXXXX" /></label>
-        <label class="field"><span>Address</span><input id="setAddress" type="text" /></label>
-        <label class="field"><span>Working hours</span><input id="setHours" type="text" /></label>
-        <label class="field"><span>Latest Job Updates button link</span><input id="setJobsUrl" type="url" placeholder="https://www.naukriexpress.space/" /><small>Only full HTTPS links are accepted.</small></label>
-        <button type="button" class="btn btn-primary" id="saveSettingsBtn">Save settings</button>
+        <label class="field"><span>Site name</span><input id="setSiteName" type="text" readonly /></label>
+        <label class="field"><span>Tagline</span><input id="setTagline" type="text" readonly /></label>
+        <label class="field"><span>WhatsApp number (with country code, digits only)</span><input id="setWhatsapp" type="text" placeholder="91XXXXXXXXXX" readonly /></label>
+        <label class="field"><span>Address</span><input id="setAddress" type="text" readonly /></label>
+        <label class="field"><span>Working hours</span><input id="setHours" type="text" readonly /></label>
+        <label class="field"><span>Latest Job Updates button link</span><input id="setJobsUrl" type="url" placeholder="https://www.naukriexpress.space/" readonly /><small>Only full HTTPS links are accepted.</small></label>
+        <button type="button" class="btn btn-outline" id="saveSettingsBtn" disabled>Fixed in GitHub</button>
         <span class="save-msg" id="settingsSaveMsg"></span>
       </div>
     </section>
@@ -77,7 +77,7 @@
     <!-- ---------- Ticker ---------- -->
     <section class="panel" id="panel-ticker" style="display:none;">
       <h2>Top ticker</h2>
-      <p class="panel-sub">Scrolling announcement shown at the very top of the site.</p>
+      <p class="panel-sub">Only this text is connected to Supabase. Saving it updates the live top ticker; the rest of the site data stays fixed in GitHub.</p>
       <div class="card-form">
         <label class="field"><span>Ticker text</span><textarea id="setTicker" rows="3"></textarea></label>
         <button type="button" class="btn btn-primary" id="saveTickerBtn">Save ticker</button>
@@ -88,7 +88,7 @@
     <!-- ---------- Services ---------- -->
     <section class="panel" id="panel-services" style="display:none;">
       <h2>Services</h2>
-      <p class="panel-sub">Each service appears as a card on the site with its own document list and optional video.</p>
+      <p class="panel-sub">The existing services are frozen in GitHub for instant loading. New services added here are stored in Supabase and can be edited or deleted here.</p>
 
       <div class="service-editor card-form" id="serviceEditor">
         <input type="hidden" id="editServiceId" />
@@ -158,14 +158,14 @@
 
     <section class="panel" id="panel-news" style="display:none;">
       <h2>News &amp; updates</h2>
-      <p class="panel-sub">Write full details and add an optional source link. Published news appears on the home page.</p>
+      <p class="panel-sub">News is fixed in the GitHub snapshot so the homepage can open immediately. This panel is read-only.</p>
       <div class="card-form" id="newsEditor">
-        <input type="hidden" id="editNewsId" />
-        <label class="field"><span>Headline</span><input id="newsTitle" type="text" /></label>
-        <label class="field"><span>Short summary</span><textarea id="newsSummary" rows="2"></textarea></label>
-        <label class="field"><span>Full details</span><textarea id="newsBody" rows="8"></textarea></label>
-        <label class="field"><span>Source / official link (optional, https://)</span><input id="newsLink" type="url" placeholder="https://example.gov.in/notice" /></label>
-        <div class="editor-actions"><button type="button" class="btn btn-primary" id="saveNewsBtn">Save news</button><button type="button" class="btn btn-ghost" id="clearNewsBtn">Clear / add new</button><span class="save-msg" id="newsSaveMsg"></span></div>
+        <input type="hidden" id="editNewsId" disabled />
+        <label class="field"><span>Headline</span><input id="newsTitle" type="text" disabled /></label>
+        <label class="field"><span>Short summary</span><textarea id="newsSummary" rows="2" disabled></textarea></label>
+        <label class="field"><span>Full details</span><textarea id="newsBody" rows="8" disabled></textarea></label>
+        <label class="field"><span>Source / official link (optional, https://)</span><input id="newsLink" type="url" placeholder="https://example.gov.in/notice" disabled /></label>
+        <div class="editor-actions"><button type="button" class="btn btn-primary" id="saveNewsBtn" disabled>Fixed in GitHub</button><button type="button" class="btn btn-ghost" id="clearNewsBtn" disabled>Read only</button><span class="save-msg" id="newsSaveMsg"></span></div>
       </div>
       <h3 style="margin-top:30px;">All news</h3><div class="admin-service-list" id="adminNewsList"></div>
     </section>
@@ -202,6 +202,7 @@
   </main>
 </div>
 
+<script src="js/site-data.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/config.js"></script>
 <script src="js/data.js"></script>
