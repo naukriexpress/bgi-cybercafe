@@ -73,3 +73,6 @@ async function ccIsAdmin() {
 }
 async function ccChangePassword(password, currentPassword) { return ccSupabase.auth.updateUser({ password, current_password: currentPassword }); }
 function ccUid(prefix) { return prefix + "-" + crypto.randomUUID(); }
+
+// Notify pages that wait for Supabase until their static snapshot has rendered.
+window.dispatchEvent(new Event("cc:data-ready"));
