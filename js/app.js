@@ -4,6 +4,8 @@
 
 (async function () {
   let db = window.CC_INITIAL_DATA ? JSON.parse(JSON.stringify(window.CC_INITIAL_DATA)) : null;
+  const frozenServices = Array.isArray(window.CC_INITIAL_DATA?.services) ? window.CC_INITIAL_DATA.services : [];
+  const frozenServiceIds = new Set(frozenServices.map(service => service.id));
   if (!db) {
     try {
       db = await ccLoadDB();
@@ -218,34 +220,26 @@
       .replace(/"/g, "&quot;");
   }
 
-  // Refresh from Supabase after the GitHub snapshot has already rendered.
-  if (window.CC_INITIAL_DATA) {
-    ccLoadDB().then(fresh => {
-      db = fresh;
-      ({ settings, services, news } = fresh);
-      setText("siteNameLbl", settings.siteName);
-      setText("siteTaglineLbl", settings.tagline);
-      setText("footerName", settings.siteName);
-      setText("statCount", services.length + "+");
-      setText("contactAddress", "📍 " + settings.address);
-      setText("contactHours", "🕒 " + settings.hours);
-      setText("contactPhone", "📱 " + formatPhoneDisplay(settings.whatsappNumber));
-      t1.textContent = settings.ticker;
-      t2.textContent = settings.ticker;
-      document.getElementById("contactWhatsapp").href = buildWhatsAppLink(
-        settings.whatsappNumber,
-        `Hello ${settings.siteName}, I need help figuring out which service and documents I need.`
-      );
-      try {
-        const jobsUrl = new URL(settings.jobsUrl || "https://www.naukriexpress.space/");
-        if (jobsUrl.protocol === "https:") document.getElementById("jobsPromo").href = jobsUrl.href;
-      } catch (_) {}
-      document.getElementById("newsModalList").innerHTML = news.length ? news.map(newsCard).join("") : "<p>No news published yet.</p>";
-      grid.innerHTML = services.map(svc => renderCard(svc)).join("");
-      const query = servicesSearch.value.trim().toLocaleLowerCase();
-      Array.from(grid.children).forEach(card => {
-        card.hidden = query !== "" && !card.textContent.toLocaleLowerCase().includes(query);
-      });
-    }).catch(error => console.warn("Supabase refresh unavailable; showing the saved site snapshot.", error));
+  // GitHub is the source of truth for existing public content. Render it immediately,
+  // then fetch only the live ticker and service records that are not in the frozen snapshot.
+  if (window.CC_INITIAL_DATA && typeof ccLoadDB === "function") {
+    ccLoadDB({ settings: true, services: true, masterDocuments: false, news: false })
+      .then(fresh => {
+        const dynamicServices = (fresh.services || []).filter(service => !frozenServiceIds.has(service.id));
+        services = [...frozenServices, ...dynamicServices];
+        settings = { ...settings, ticker: fresh.settings?.ticker || settings.ticker };
+        db = { settings, services, news };
+
+        // Do not overwrite the GitHub-fixed title, contact information, address or news.
+        t1.textContent = settings.ticker;
+        t2.textContent = settings.ticker;
+        setText("statCount", services.length + "+");
+        grid.innerHTML = services.map(svc => renderCard(svc)).join("");
+        const query = servicesSearch.value.trim().toLocaleLowerCase();
+        Array.from(grid.children).forEach(card => {
+          card.hidden = query !== "" && !card.textContent.toLocaleLowerCase().includes(query);
+        });
+      })
+      .catch(error => console.warn("Live ticker/services refresh unavailable; showing the saved GitHub snapshot.", error));
   }
 })();
