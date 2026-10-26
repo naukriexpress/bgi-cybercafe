@@ -1,40 +1,30 @@
-(async function () {
+(function () {
   const target = document.getElementById("detail");
   const id = new URLSearchParams(location.search).get("id");
-  if (!id) { target.innerHTML = "<h1>Service not found</h1><p>Choose a service from the home page.</p>"; return; }
+  if (!id) {
+    target.innerHTML = "<h1>Service not found</h1><p>Choose a service from the home page.</p>";
+    target.setAttribute("aria-busy", "false");
+    return;
+  }
   const safe = value => String(value ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  try {
-    // Supabase is the source of truth for services saved in Admin. Keep the generated
-    // static snapshot as a fallback if the live request is temporarily unavailable.
-    let snapshot = window.CC_SERVICE_DATA;
-    if (typeof ccLoadDB === "function") {
-      try {
-        const liveSnapshot = await ccLoadDB({
-          settings: true,
-          services: true,
-          masterDocuments: false,
-          news: false
-        });
-        if (liveSnapshot && Array.isArray(liveSnapshot.services)) {
-          snapshot = {
-            settings: liveSnapshot.settings || snapshot?.settings || {},
-            services: liveSnapshot.services
-          };
-        }
-      } catch (liveError) {
-        console.warn("Could not load live service data; using the static snapshot fallback.", liveError);
-      }
-    }
-    if (!snapshot || !snapshot.settings || !Array.isArray(snapshot.services)) throw new Error('Live and static service data are unavailable.');
-    const { settings, services } = snapshot;
-    const service = services.find(item => item.id === id);
-    if (!service) { target.innerHTML = "<h1>Service not found</h1><p>This service may have been removed. Please see the current services on our home page.</p>"; return; }
+
+  // Render the saved GitHub snapshot first so this page never waits on a network request.
+  // The current Supabase service data is requested in the background and replaces it when ready.
+  function renderSnapshot(snapshot) {
+    try {
+      if (!snapshot || !snapshot.settings || !Array.isArray(snapshot.services)) return false;
+      const { settings, services } = snapshot;
+      const service = services.find(item => item.id === id);
+      if (!service) return false;
     document.title = service.title + " | BGI Cybercafe Akola";
     document.querySelector('meta[name="description"]').content = (service.description || service.title).slice(0, 155);
-    const canonical = document.createElement("link");
-    canonical.rel = "canonical";
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.append(canonical);
+    }
     canonical.href = "https://www.bgicybercafe.world/service.html?id=" + encodeURIComponent(service.id);
-    document.head.append(canonical);
     const docs = service.documents || [];
     const detail = service.detailContent || {};
     const detailButtons = Array.isArray(detail.documents) ? detail.documents : [];
@@ -91,9 +81,44 @@
       try { await navigator.clipboard.writeText(pageLink); event.currentTarget.textContent = "✓ Link copied"; }
       catch (_) { window.prompt("Copy this link:", pageLink); }
     });
+    target.setAttribute("aria-busy", "false");
     if (location.hash) setTimeout(() => document.getElementById(location.hash.slice(1))?.scrollIntoView(), 0);
+    return true;
   } catch (error) {
+    target.setAttribute("aria-busy", "false");
     target.innerHTML = "<h1>Details unavailable</h1><p>Please try again later or contact us.</p>";
     console.error(error);
+    return false;
+  }
+}
+
+  const staticSnapshot = window.CC_SERVICE_DATA;
+  const renderedFromSnapshot = staticSnapshot ? renderSnapshot(staticSnapshot) : false;
+  if (!renderedFromSnapshot) {
+    // Leave the HTML skeleton visible while a newly added service is looked up live.
+    target.setAttribute("aria-busy", "true");
+  }
+
+  if (typeof ccLoadDB === "function") {
+    ccLoadDB({ settings: true, services: true, masterDocuments: false, news: false })
+      .then(liveSnapshot => {
+        if (!liveSnapshot || !liveSnapshot.settings || !Array.isArray(liveSnapshot.services)) return;
+        const normalized = {
+          settings: liveSnapshot.settings || staticSnapshot?.settings || {},
+          services: liveSnapshot.services
+        };
+        const renderedLive = renderSnapshot(normalized);
+        if (!renderedLive && !renderedFromSnapshot) {
+          target.innerHTML = "<h1>Service not found</h1><p>This service may have been removed or has not finished saving. Please return to the services list and try again.</p>";
+          target.setAttribute("aria-busy", "false");
+        }
+      })
+      .catch(error => {
+        console.warn("Live service refresh unavailable; the saved snapshot remains visible.", error);
+        if (!renderedFromSnapshot) {
+          target.innerHTML = "<h1>Details are taking longer to load</h1><p>Please check your connection and refresh this page. The service layout is ready, but its latest data could not be retrieved.</p>";
+          target.setAttribute("aria-busy", "false");
+        }
+      });
   }
 })();
