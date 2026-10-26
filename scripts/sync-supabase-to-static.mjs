@@ -69,8 +69,8 @@ const homepage = {
 const details = { settings, services };
 
 const files = new Map([
-  ["js/site-data.js", "/* Automatically generated from Supabase public site data. */\nwindow.CC_INITIAL_DATA = " + JSON.stringify(homepage, null, 2) + ";\n"],
-  ["js/service-data.js", "/* Automatically generated from Supabase public site data. */\nwindow.CC_SERVICE_DATA = " + JSON.stringify(details, null, 2) + ";\n"],
+  ["js/site-data.js", "/* Frozen GitHub snapshot: existing site settings, news, and baseline service cards. New services load from Supabase. */\nwindow.CC_INITIAL_DATA = " + JSON.stringify(homepage, null, 2) + ";\n"],
+  ["js/service-data.js", "/* Frozen GitHub snapshot: full details for existing baseline services. New services load from Supabase. */\nwindow.CC_SERVICE_DATA = " + JSON.stringify(details, null, 2) + ";\n"],
   ["data/master-documents.json", JSON.stringify({ masterDocuments }, null, 2) + "\n"]
 ]);
 
