@@ -1,4 +1,4 @@
-/* Automatically generated from Supabase public site data. */
+/* Frozen GitHub snapshot: existing site settings, news, and baseline service cards. New services load from Supabase. */
 window.CC_INITIAL_DATA = {
   "news": [
     {
