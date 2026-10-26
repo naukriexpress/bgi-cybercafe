@@ -20,16 +20,56 @@
     const jobsUrl = new URL(settings.jobsUrl || "https://www.naukriexpress.space/");
     if (jobsUrl.protocol === "https:") document.getElementById("jobsPromo").href = jobsUrl.href;
   } catch (_) {}
+  // Short, plain-language headlines and summaries for the current notices.
+  // The full original notice remains available on each detail page.
+  const simpleNewsCopy = {
+    "news-44687762-0c2e-4511-9ed1-5e9b3fc3bcdb": {
+      title: "Aaple Sarkar Portal: Service Update",
+      summary: "The portal was reported to be unavailable from 16–21 October for a software upgrade. Check the official portal to confirm services are working again."
+    },
+    "news-6f676ed7-c79b-4167-9c3e-f1afcd0af89b": {
+      title: "Government Hostel Admission 2026–27",
+      summary: "The professional-course deadline was extended to 10 October 2026. Other listed deadlines were 30 September. Check the official portal for a newer notice."
+    },
+    "news-258f69ce-5187-4662-a726-2a9997a5ed0e": {
+      title: "Akola: Aaple Sarkar Seva Kendra",
+      summary: "The notice gave 6 October 2026, 5 PM as the extended deadline for new centre applications. Check the official site for a newer notice."
+    },
+    "news-aa6cd69f-a0be-4d87-bd6e-e6d15a1f104b": {
+      title: "DMER Round 3: Tutor & Junior Resident",
+      summary: "The notice extended applications and preference filling to 30 September 2026, 2 PM. Check the DMER site for a newer schedule."
+    },
+    "news-113d0142-1cb8-4442-a637-fb9df5ecec27": {
+      title: "YCMOU Backlog/ATKT Exam Form",
+      summary: "The no-late-fee deadline was 2 October 2026. Late-fee windows were listed through 14 October. Check the university portal for any new dates."
+    }
+  };
+
   const newsCard = item => {
     const detailUrl = "news-detail.html?id=" + encodeURIComponent(item.id);
+    const copy = simpleNewsCopy[item.id] || {};
+    const title = copy.title || item.title;
+    const rawSummary = copy.summary || item.summary || (item.body || "").slice(0, 180);
+    const summary = rawSummary.length > 220 ? rawSummary.slice(0, 217).replace(/\\s+\\S*$/, "") + "…" : rawSummary;
+    let dateText = "";
+    try {
+      if (item.published_at) dateText = new Date(item.published_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+    } catch (_) {}
+    const dateAttr = item.published_at ? ' datetime="' + escapeHtml(item.published_at) + '"' : "";
+    const date = dateText ? '<time class="news-card-date"' + dateAttr + '>' + escapeHtml(dateText) + '</time>' : "";
     let sourceLink = "";
     try {
       const source = new URL(item.source_url);
       if (source.protocol === "https:" || source.protocol === "http:") {
-        sourceLink = '<a class="news-card-link news-card-source" href="' + escapeHtml(source.href) + '" target="_blank" rel="noopener noreferrer">Official notice <span aria-hidden="true">↗</span></a>';
+        sourceLink = '<a class="news-card-link news-card-source" href="' + escapeHtml(source.href) + '" target="_blank" rel="noopener noreferrer">Official link <span aria-hidden="true">↗</span></a>';
       }
     } catch (_) {}
-    return '<article class="service-card news-card"><span class="news-card-label">News &amp; updates</span><h3 class="news-card-title"><a href="' + detailUrl + '">' + escapeHtml(item.title) + '</a></h3><p class="news-card-summary">' + escapeHtml(item.summary || (item.body || "").slice(0, 160)) + '</p><div class="news-card-actions"><a class="news-card-link news-card-details" href="' + detailUrl + '">Read full details <span aria-hidden="true">→</span></a>' + sourceLink + '</div></article>';
+    return '<article class="service-card news-card">' +
+      '<div class="news-card-topline"><span class="news-card-label"><span class="news-card-label-dot" aria-hidden="true"></span> Public notice</span>' + date + '</div>' +
+      '<h3 class="news-card-title"><a href="' + detailUrl + '" aria-label="Read details: ' + escapeHtml(title) + '">' + escapeHtml(title) + '</a></h3>' +
+      '<p class="news-card-summary">' + escapeHtml(summary) + '</p>' +
+      '<div class="news-card-actions"><a class="news-card-link news-card-details" href="' + detailUrl + '">Read details <span aria-hidden="true">→</span></a>' + sourceLink + '</div>' +
+      '</article>';
   };
   document.getElementById("newsModalList").innerHTML = news.length ? news.map(newsCard).join("") : "<p>No news published yet.</p>";
 
