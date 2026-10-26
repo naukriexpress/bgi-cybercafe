@@ -99,7 +99,8 @@
     target.setAttribute("aria-busy", "true");
   }
 
-  if (typeof ccLoadDB === "function") {
+  function refreshFromSupabase() {
+    if (typeof ccLoadDB !== "function") return;
     ccLoadDB({ settings: true, services: true, masterDocuments: false, news: false })
       .then(liveSnapshot => {
         if (!liveSnapshot || !liveSnapshot.settings || !Array.isArray(liveSnapshot.services)) return;
@@ -121,4 +122,9 @@
         }
       });
   }
+
+  // This file can execute before the optional Supabase SDK is ready. The local snapshot
+  // has already rendered; update the page as soon as js/data.js announces readiness.
+  if (typeof ccLoadDB === "function") refreshFromSupabase();
+  else window.addEventListener("cc:data-ready", refreshFromSupabase, { once: true });
 })();
