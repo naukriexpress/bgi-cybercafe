@@ -50,7 +50,7 @@
     const copy = simpleNewsCopy[item.id] || {};
     const title = copy.title || item.title;
     const rawSummary = copy.summary || item.summary || (item.body || "").slice(0, 180);
-    const summary = rawSummary.length > 220 ? rawSummary.slice(0, 217).replace(/\\s+\\S*$/, "") + "…" : rawSummary;
+    const summary = rawSummary.length > 220 ? rawSummary.slice(0, 217).replace(/\s+\S*$/, "") + "…" : rawSummary;
     let dateText = "";
     try {
       if (item.published_at) dateText = new Date(item.published_at).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
